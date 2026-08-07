@@ -1,0 +1,3 @@
+display_name: Luminis go_router
+short_description: Navegacao Flutter com go_router 17.x no Luminis.
+default_prompt: Use $luminis-go-router-agent para implementar ou revisar navegacao Flutter com go_router no Luminis.

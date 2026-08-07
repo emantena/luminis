@@ -7,6 +7,7 @@ Use este mapa para tarefas de implementacao Flutter.
 - Arquitetura principal: `docs/architecture/flutter-architecture.md`
 - Navegacao: `docs/architecture/navigation.md`
 - Estado: `docs/architecture/state-management.md`
+- Dependencias Flutter: `docs/architecture/flutter-dependencies.md`
 - Layout do repositorio: `docs/architecture/repository-layout.md`
 - Estilo de codigo: `docs/engineering/coding-style.md`
 - Politica de dependencias: `docs/engineering/dependency-policy.md`
@@ -44,3 +45,5 @@ Use este mapa para tarefas de implementacao Flutter.
 - Verificar se `frontend/luminis_app` ja existe e qual estrutura foi criada.
 - Usar dependencias aprovadas antes de adicionar novas.
 - Manter mocks substituiveis por repositorios/API depois.
+- Para navegacao, usar `luminis-go-router-agent`.
+- Para estado/DI, usar `luminis-riverpod-agent`.

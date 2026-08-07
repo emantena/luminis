@@ -31,9 +31,43 @@ lib/
 
 ## Camadas
 
-- `domain`: entidades, value objects, regras puras e contratos.
-- `infrastructure`: implementacoes concretas de repositorios, APIs, cache e storage.
-- `presentation`: widgets, controllers/view models e estados de tela.
+Cada feature deve evoluir para a seguinte divisao quando houver complexidade suficiente:
+
+```text
+features/<feature>/
+  domain/
+    entities/
+    repositories/
+    value_objects/
+  application/
+    use_cases/
+    services/
+  data/
+    models/
+    mappers/
+    repositories/
+  presentation/
+    controllers/
+    screens/
+    widgets/
+    state/
+```
+
+Responsabilidades:
+
+- `domain`: entidades, value objects, regras puras e contratos de repository.
+- `application`: casos de uso, servicos de aplicacao e coordenacao de regras.
+- `data`: models, mappers e implementacoes concretas de repositories.
+- `presentation`: screens, widgets, controllers/view models e estados de tela.
+
+Regras:
+
+- Widgets nao devem acessar repositories concretos.
+- Widgets nao devem conter regra de negocio relevante.
+- Controllers/view models coordenam estado de tela e chamam casos de uso.
+- Repositories concretos devem implementar contratos definidos no dominio.
+- Mocks devem respeitar os mesmos contratos das futuras APIs reais.
+- Componentes compartilhados devem nascer apenas quando houver repeticao real ou padrao visual claro.
 
 ## Features iniciais recomendadas
 
@@ -63,6 +97,8 @@ Diretrizes:
 - Repositorios mockados devem implementar contratos que possam ser substituidos por APIs reais depois.
 - Estado de tela deve representar carregamento, sucesso vazio, sucesso com dados e erro.
 - Evitar logica de negocio relevante dentro de widgets.
+- Dependencias devem ser injetadas por providers.
+- Para tarefas de estado/DI, usar `luminis-riverpod-agent`.
 
 ## Navegacao
 
@@ -76,6 +112,8 @@ A navegacao deve separar fluxo publico de autenticacao e shell autenticado com a
 - Leitura.
 - Metas.
 - Perfil.
+
+Para tarefas de navegacao, usar `luminis-go-router-agent`.
 
 ## Persistencia
 

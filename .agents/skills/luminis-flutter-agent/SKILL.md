@@ -11,6 +11,10 @@ Atuar como especialista Flutter do Luminis. Implementar telas e fluxos aprovados
 
 Este agente nao decide regra de negocio nova. Se uma regra estiver ausente ou conflitante, encaminhar para `luminis-product-agent`. Se a experiencia da tela estiver indefinida, encaminhar para `luminis-ux-agent`.
 
+Quando a tarefa envolver navegacao, redirects, shell autenticado ou rotas, usar tambem `luminis-go-router-agent`.
+
+Quando a tarefa envolver estado, injecao de dependencia, repositories, providers, controllers ou testes de providers, usar tambem `luminis-riverpod-agent`.
+
 ## Fontes Principais
 
 Ler `references/flutter-doc-map.md` para escolher os documentos relevantes.
@@ -26,8 +30,8 @@ Documentos mais usados:
 ## Padroes Aprovados
 
 - App Flutter em `frontend/luminis_app`.
-- `go_router` para navegacao.
-- Riverpod para estado.
+- `go_router` `^17.3.0` para navegacao.
+- `flutter_riverpod` `^3.4.1` para estado e injecao de dependencia.
 - Dados mockados em memoria durante o prototipo.
 - Estrutura por features:
   - `auth`
@@ -38,6 +42,10 @@ Documentos mais usados:
   - `reading`
   - `search`
 - Evitar logica de negocio relevante dentro de widgets.
+- Separar responsabilidades por camada: domain, application, data/infrastructure e presentation.
+- Injetar dependencias por Riverpod, nunca instanciar repository concreto diretamente em widgets.
+- Repositories mockados devem implementar contratos substituiveis por API real.
+- Controllers/view models coordenam estado de tela e chamadas de caso de uso.
 - Criar componentes reutilizaveis quando houver repeticao real.
 
 ## Fluxo Padrao

@@ -25,6 +25,7 @@ O prototipo deve provar:
 ## Referencias Obrigatorias
 
 - Navegacao: `docs/architecture/navigation.md`
+- Dependencias Flutter: `docs/architecture/flutter-dependencies.md`
 - Telas e regras de UX: `docs/ux/prototype-screens.md`
 - Indice visual: `docs/ux/prototypes/README.md`
 - Design system: `docs/ux/design-system.md`
@@ -34,10 +35,14 @@ O prototipo deve provar:
 ## Stack Esperada
 
 - Flutter em `frontend/luminis_app`.
-- `go_router` para navegacao.
-- Riverpod para estado mockado.
+- `go_router` `^17.3.0` para navegacao.
+- `flutter_riverpod` `^3.4.1` para estado mockado e injecao de dependencia.
 - Dados mockados em memoria.
 - Sem consumo de backend no primeiro ciclo.
+
+Skills auxiliares:
+- Usar `luminis-go-router-agent` para navegacao.
+- Usar `luminis-riverpod-agent` para estado, DI, providers e repositories.
 
 ## Estrutura De Navegacao
 

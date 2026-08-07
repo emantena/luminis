@@ -15,8 +15,11 @@ Este guia define como agentes devem trabalhar no Luminis.
 - `luminis-product-agent`: produto, MVP, regras de negocio, escopo, decisoes e documentacao.
 - `luminis-ux-agent`: jornadas, telas, estados, interacoes, usabilidade e prototipacao.
 - `luminis-flutter-agent`: implementacao Flutter, `go_router`, Riverpod, mocks, widgets e validacao do app.
+- `luminis-go-router-agent`: navegacao Flutter com `go_router` 17.x, redirects, shell autenticado e rotas.
+- `luminis-riverpod-agent`: estado, injecao de dependencia, providers, repositories, controllers e testes com Riverpod 3.x.
 
 O agente de produto deve delegar para UX quando a pergunta for sobre experiencia/telas e para Flutter quando a pergunta for sobre implementacao.
+O agente Flutter deve delegar para `luminis-go-router-agent` quando mexer em navegacao e para `luminis-riverpod-agent` quando mexer em estado ou DI.
 
 ## Respostas sobre produto
 

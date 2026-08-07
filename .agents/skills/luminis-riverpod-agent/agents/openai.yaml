@@ -1,0 +1,3 @@
+display_name: Luminis Riverpod
+short_description: Estado e injecao de dependencia com Riverpod 3.x.
+default_prompt: Use $luminis-riverpod-agent para implementar ou revisar estado, DI e providers Riverpod no Luminis.
