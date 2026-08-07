@@ -1,0 +1,98 @@
+# OS / filesystem
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors / IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+
+# Logs / temp
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.orig
+*.pid
+tmp/
+temp/
+.cache/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Dart / Flutter
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/build/
+**/coverage/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+**/.pub-cache/
+**/.pub/
+
+# Flutter symbolication / obfuscation
+**/app.*.symbols
+**/app.*.map.json
+
+# Android / Gradle
+**/android/.gradle/
+**/android/local.properties
+**/android/**/build/
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+**/android/key.properties
+**/*.jks
+**/*.keystore
+
+# iOS / macOS generated files
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/macos/Pods/
+**/macos/.symlinks/
+
+# .NET
+**/bin/
+**/obj/
+**/TestResults/
+**/BenchmarkDotNet.Artifacts/
+**/*.nupkg
+**/*.snupkg
+**/packages/
+
+# .NET local config / publish
+**/appsettings.Local.json
+**/publish/
+
+# Database / local tooling
+*.db
+*.sqlite
+*.sqlite3
+*.bak
+*.dump
+
+# Node tooling, if docs or tools add it later
+**/node_modules/
+**/.next/
+**/dist/
+
+# Local continuation helpers
+comando_para_continuar.txt
