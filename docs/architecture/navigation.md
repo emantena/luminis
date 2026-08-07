@@ -62,11 +62,10 @@ Feed completo nao deve ser aba no MVP. Quando social entrar, a aba `Inicio` ou `
 ### Estante
 
 - `/bookshelf`
-- `/bookshelf/:bookshelfItemId/reading-state`
 
 Uso:
 - `/bookshelf` lista itens ativos da estante com filtros.
-- `/bookshelf/:bookshelfItemId/reading-state` monta a tela consolidada de leitura de um item.
+- Ao abrir um item em leitura, a navegacao deve usar `/reading/:bookshelfItemId`.
 
 Observacao:
 `GET /api/bookshelf-items/{bookshelfItemId}` permanece candidato de UX. A navegacao deve tentar cobrir o fluxo com listagem e `reading-state` antes de aprovar uma tela intermediaria obrigatoria.

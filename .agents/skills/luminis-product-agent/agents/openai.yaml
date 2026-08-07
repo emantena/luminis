@@ -1,0 +1,4 @@
+interface:
+  display_name: "Luminis Product Agent"
+  short_description: "Agente de produto e documentacao do Luminis"
+  default_prompt: "Use $luminis-product-agent para discutir, especificar ou revisar decisoes de produto, arquitetura e regras do Luminis."

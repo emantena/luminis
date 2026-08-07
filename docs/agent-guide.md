@@ -4,16 +4,26 @@ Este guia define como agentes devem trabalhar no Luminis.
 
 ## Ordem de consulta
 
-1. Leia `docs/README.md`.
-2. Leia a documentacao especifica do dominio afetado.
-3. Leia o codigo existente antes de propor ou aplicar mudancas.
-4. Se houver conflito entre documentacao e codigo, trate como divergencia e registre no resultado.
+1. Se disponivel, use a skill local adequada em `.agents/skills`.
+2. Leia `docs/README.md`.
+3. Leia a documentacao especifica do dominio afetado.
+4. Leia o codigo existente antes de propor ou aplicar mudancas.
+5. Se houver conflito entre documentacao e codigo, trate como divergencia e registre no resultado.
+
+## Skills locais do projeto
+
+- `luminis-product-agent`: produto, MVP, regras de negocio, escopo, decisoes e documentacao.
+- `luminis-ux-agent`: jornadas, telas, estados, interacoes, usabilidade e prototipacao.
+- `luminis-flutter-agent`: implementacao Flutter, `go_router`, Riverpod, mocks, widgets e validacao do app.
+
+O agente de produto deve delegar para UX quando a pergunta for sobre experiencia/telas e para Flutter quando a pergunta for sobre implementacao.
 
 ## Respostas sobre produto
 
 Ao responder perguntas de produto:
 
 - Use `docs/rag/product-agent.md` como especificacao de comportamento do agente de produto.
+- Use `.agents/skills/luminis-product-agent` como ponto de entrada quando a sessao suportar skills locais.
 - Use `docs/product/business-rules.md` como fonte normativa.
 - Use `docs/product/skoob-research.md` apenas como referencia de inspiracao e benchmarking.
 - Nao assuma que o Luminis deve copiar o Skoob. O objetivo e criar uma rede social de livros propria.

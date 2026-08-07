@@ -1,0 +1,4 @@
+interface:
+  display_name: "Luminis UX Agent"
+  short_description: "Especialista em UX e prototipacao do Luminis"
+  default_prompt: "Use $luminis-ux-agent para desenhar fluxos, telas, interacoes e prototipos do Luminis."

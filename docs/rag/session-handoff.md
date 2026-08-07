@@ -9,8 +9,16 @@ Copie e cole isto no novo chat/agente:
 ```text
 Estamos trabalhando no projeto Luminis, um app Flutter com backend .NET para organizador social de leitura.
 
+Se as skills locais estiverem disponiveis:
+- use $luminis-product-agent para produto, regras e decisoes;
+- use $luminis-ux-agent para telas, jornadas e prototipos;
+- use $luminis-flutter-agent para implementacao Flutter.
+
 Antes de responder ou implementar qualquer coisa, leia:
 - docs/README.md
+- .agents/skills/luminis-product-agent/SKILL.md
+- .agents/skills/luminis-ux-agent/SKILL.md
+- .agents/skills/luminis-flutter-agent/SKILL.md
 - docs/rag/product-agent.md
 - docs/product/mvp.md
 - docs/product/business-rules.md
@@ -49,6 +57,8 @@ Estado atual:
 - Guia de prototipacao das telas esta em docs/ux/prototype-screens.md.
 - Estrutura inicial do repositorio foi preparada com `backend/` e `frontend/`; codigo novo ainda nao foi criado nessas pastas.
 - Flutter antigo criado na raiz foi removido.
+- Skills locais do projeto foram criadas em `.agents/skills/` para preservar o modo de trabalho entre sessoes.
+- `luminis-product-agent` ficou responsavel por produto/regras/decisoes e deve delegar UX para `luminis-ux-agent` e implementacao Flutter para `luminis-flutter-agent`.
 
 Proximo alvo recomendado:
 Prototipar as telas principais do MVP com dados mockados seguindo `docs/ux/prototype-screens.md`.
@@ -207,3 +217,17 @@ Escolha um:
 
 Recomendacao atual:
 Prototipar as telas principais com dados mockados seguindo a navegacao aprovada, antes de criar codigo definitivo.
+
+## Skills do projeto
+
+As skills locais do Luminis estao em:
+- `.agents/skills/luminis-product-agent`
+- `.agents/skills/luminis-ux-agent`
+- `.agents/skills/luminis-flutter-agent`
+
+Uso recomendado em novas sessoes:
+- `Use $luminis-product-agent para discutir, especificar ou revisar decisoes de produto, arquitetura e regras do Luminis.`
+- `Use $luminis-ux-agent para desenhar fluxos, telas, interacoes e prototipos do Luminis.`
+- `Use $luminis-flutter-agent para implementar o app Flutter do Luminis com go_router, Riverpod e arquitetura aprovada.`
+
+As skills nao substituem a documentacao em `docs/`; elas orientam o agente sobre quais documentos consultar, quando delegar e como registrar novas decisoes.
