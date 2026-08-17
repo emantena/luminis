@@ -1,0 +1,54 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "luminis: iniciar mock API",
+            "type": "npm",
+            "script": "ensure",
+            "path": "backend/mock-api",
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "luminis-mock-api",
+                "pattern": [
+                    {
+                        "regexp": "^(.*)$",
+                        "message": 1
+                    }
+                ],
+                "background": {
+                    "activeOnStart": true,
+                    "endsPattern": "Luminis mock-api rodando em http://localhost:[0-9]+"
+                }
+            },
+            "presentation": {
+                "reveal": "silent",
+                "panel": "dedicated",
+                "group": "luminis-mock-api"
+            }
+        },
+        {
+            "label": "luminis: encaminhar mock para USB",
+            "type": "process",
+            "command": "adb",
+            "args": [
+                "reverse",
+                "tcp:3000",
+                "tcp:3000"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "luminis: preparar mock no aparelho",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "luminis: iniciar mock API",
+                "luminis: encaminhar mock para USB"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}

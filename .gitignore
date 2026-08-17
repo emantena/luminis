@@ -11,6 +11,9 @@ desktop.ini
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.example.json
+!.vscode/launch.json
+!.vscode/tasks.json
+.claude/settings.local.json
 
 # Logs / temp
 *.log
