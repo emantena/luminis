@@ -1323,6 +1323,45 @@ Metas nao podem ser concluidas manualmente pelo usuario. A conclusao e uma trans
 
 Quando uma meta ativa ultrapassar `endsOn` sem atingir o alvo, ela permanece `active`. O backend deve expor campos calculados para que o Flutter alerte o usuario e ofereca alteracao da meta, sem encerrar automaticamente a meta como falhada.
 
+### DTO compartilhado de progresso de meta
+
+As respostas de `GET /api/reading-goals`, `POST /api/reading-goals`, `GET /api/reading-goals/{readingGoalId}`, `PATCH /api/reading-goals/{readingGoalId}` e `POST /api/reading-goals/{readingGoalId}/cancel` retornam a meta com um objeto `progress` calculado. O mesmo formato deve ser usado por `GET /api/reading-goals/{readingGoalId}/progress`, acrescido de `readingGoalId`, `metricType` e `targetValue` no topo da resposta.
+
+Campos de auditoria da meta:
+- `createdAt` e `updatedAt` devem ser retornados em ISO 8601.
+- `completedAt` deve ser `null` enquanto a meta nao estiver concluida.
+- `cancelledAt` deve ser `null` enquanto a meta nao estiver cancelada.
+
+`progress`:
+
+```json
+{
+  "currentValue": 8,
+  "percentage": 33.33,
+  "remainingValue": 16,
+  "remainingDays": 136,
+  "bonusValue": 0,
+  "isReached": false,
+  "isExceeded": false,
+  "isExpired": false,
+  "needsAttention": false,
+  "contributors": [
+    {
+      "title": "Dom Casmurro",
+      "value": 80,
+      "description": "Paginas novas lidas no periodo."
+    }
+  ],
+  "calculatedAt": "2026-08-07T12:00:00Z"
+}
+```
+
+Regras:
+- `remainingDays` deve ser calculado a partir da data atual ate `endsOn`, limitado a zero quando o periodo ja tiver passado.
+- `contributors` detalha a composicao exibida no Flutter. Cada item deve representar uma leitura, releitura, registro de paginas ou outra origem de progresso considerada no calculo.
+- A soma de `contributors[].value` deve ser igual a `currentValue` quando todos os dados de origem estiverem disponiveis para o usuario autenticado.
+- Quando nao houver composicao exibivel, `contributors` deve ser `[]`, sem omitir o campo.
+
 Regras relacionadas:
 - BR-GOAL-001
 - BR-GOAL-002
@@ -1359,27 +1398,40 @@ Response: `200 OK`
       "status": "active",
       "targetValue": 24,
       "startsOn": "2026-01-01",
-      "endsOn": "2026-12-31",
-      "isPublic": false,
-      "completedAt": null,
-      "progress": {
-        "currentValue": 8,
-        "percentage": 33.33,
-        "remainingValue": 16,
-        "bonusValue": 0,
-        "isReached": false,
-        "isExceeded": false,
-        "isExpired": false,
-        "needsAttention": false
+        "endsOn": "2026-12-31",
+        "isPublic": false,
+        "completedAt": null,
+        "cancelledAt": null,
+        "createdAt": "2026-01-01T00:00:00Z",
+        "updatedAt": "2026-08-07T12:00:00Z",
+        "progress": {
+          "currentValue": 8,
+          "percentage": 33.33,
+          "remainingValue": 16,
+          "remainingDays": 146,
+          "bonusValue": 0,
+          "isReached": false,
+          "isExceeded": false,
+          "isExpired": false,
+          "needsAttention": false,
+          "contributors": [
+            {
+              "title": "Dom Casmurro",
+              "value": 8,
+              "description": "Leitura concluida no periodo."
+            }
+          ],
+          "calculatedAt": "2026-08-07T12:00:00Z"
+        }
       }
-    }
-  ]
+    ]
 }
 ```
 
 Regras:
 - Retornar apenas metas do usuario autenticado.
 - Nao retornar metas com `deleted_at` preenchido.
+- Quando `status` for omitido, retornar metas nao canceladas. Metas canceladas devem aparecer apenas com `status=cancelled`.
 - `progress` deve ser calculado no momento da consulta.
 
 Erros:
@@ -1420,15 +1472,21 @@ Response: `201 Created`
   "endsOn": "2026-08-31",
   "isPublic": false,
   "completedAt": null,
+  "cancelledAt": null,
+  "createdAt": "2026-08-07T12:00:00Z",
+  "updatedAt": "2026-08-07T12:00:00Z",
   "progress": {
     "currentValue": 0,
     "percentage": 0,
     "remainingValue": 1200,
+    "remainingDays": 24,
     "bonusValue": 0,
     "isReached": false,
     "isExceeded": false,
     "isExpired": false,
-    "needsAttention": false
+    "needsAttention": false,
+    "contributors": [],
+    "calculatedAt": "2026-08-07T12:00:00Z"
   }
 }
 ```
@@ -1467,15 +1525,27 @@ Response: `200 OK`
   "endsOn": "2026-12-31",
   "isPublic": false,
   "completedAt": null,
+  "cancelledAt": null,
+  "createdAt": "2026-01-01T00:00:00Z",
+  "updatedAt": "2026-08-07T12:00:00Z",
   "progress": {
     "currentValue": 8,
     "percentage": 33.33,
     "remainingValue": 16,
+    "remainingDays": 146,
     "bonusValue": 0,
     "isReached": false,
     "isExceeded": false,
     "isExpired": false,
-    "needsAttention": false
+    "needsAttention": false,
+    "contributors": [
+      {
+        "title": "Dom Casmurro",
+        "value": 8,
+        "description": "Leitura concluida no periodo."
+      }
+    ],
+    "calculatedAt": "2026-08-07T12:00:00Z"
   }
 }
 ```
@@ -1577,11 +1647,19 @@ Response: `200 OK`
   "currentValue": 1350,
   "percentage": 100,
   "remainingValue": 0,
+  "remainingDays": 24,
   "bonusValue": 150,
   "isReached": true,
   "isExceeded": true,
   "isExpired": false,
   "needsAttention": false,
+  "contributors": [
+    {
+      "title": "Dom Casmurro",
+      "value": 1350,
+      "description": "Paginas novas lidas no periodo."
+    }
+  ],
   "calculatedAt": "2026-08-07T12:00:00Z"
 }
 ```

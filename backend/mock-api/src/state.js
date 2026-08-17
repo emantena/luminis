@@ -21,6 +21,7 @@ const state = {
   catalogBooks: structuredClone(seed.catalogBooks || []),
   bookDrafts: structuredClone(seed.bookDrafts || []),
   bookshelfItems: structuredClone(seed.bookshelfItems || []),
+  readingGoals: structuredClone(seed.readingGoals || []),
   googleTokens: structuredClone(googleTokens),
   accessTokens: new Map(),
   refreshTokens: new Map(),

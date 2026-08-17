@@ -260,5 +260,85 @@
       "updatedAt": "2026-02-01T00:00:00.000Z",
       "removedAt": null
     }
+  ],
+
+  "readingGoals": [
+    {
+      "id": "goal_monthly_pages_active",
+      "userId": "usr_ana_lima",
+      "periodType": "monthly",
+      "metricType": "pages_read",
+      "status": "active",
+      "targetValue": 500,
+      "startsOn": "2026-08-01",
+      "endsOn": "2026-08-31",
+      "isPublic": false,
+      "completedAt": null,
+      "cancelledAt": null,
+      "createdAt": "2026-08-01T00:00:00.000Z",
+      "updatedAt": "2026-08-16T00:00:00.000Z",
+      "deletedAt": null,
+      "mockProgressValue": 120,
+      "mockContributors": [
+        {
+          "title": "Dom Casmurro",
+          "value": 120,
+          "description": "Paginas novas lidas no periodo."
+        }
+      ]
+    },
+    {
+      "id": "goal_yearly_books_bonus",
+      "userId": "usr_ana_lima",
+      "periodType": "annual",
+      "metricType": "books_read",
+      "status": "completed",
+      "targetValue": 12,
+      "startsOn": "2026-01-01",
+      "endsOn": "2026-12-31",
+      "isPublic": false,
+      "completedAt": "2026-08-10T00:00:00.000Z",
+      "cancelledAt": null,
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-08-10T00:00:00.000Z",
+      "deletedAt": null,
+      "mockProgressValue": 14,
+      "mockContributors": [
+        {
+          "title": "Memorias Postumas de Bras Cubas",
+          "value": 13,
+          "description": "Leitura concluida no periodo."
+        },
+        {
+          "title": "Dom Casmurro",
+          "value": 1,
+          "description": "Releitura concluida conta como nova leitura."
+        }
+      ]
+    },
+    {
+      "id": "goal_expired_pages_attention",
+      "userId": "usr_ana_lima",
+      "periodType": "monthly",
+      "metricType": "pages_read",
+      "status": "active",
+      "targetValue": 300,
+      "startsOn": "2026-07-01",
+      "endsOn": "2026-07-31",
+      "isPublic": false,
+      "completedAt": null,
+      "cancelledAt": null,
+      "createdAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-31T00:00:00.000Z",
+      "deletedAt": null,
+      "mockProgressValue": 80,
+      "mockContributors": [
+        {
+          "title": "Dom Casmurro",
+          "value": 80,
+          "description": "Paginas novas lidas no periodo."
+        }
+      ]
+    }
   ]
 }

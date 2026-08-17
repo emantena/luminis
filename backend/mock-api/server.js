@@ -4,6 +4,7 @@ const { generateTraceId } = require('./src/errors');
 const authRouter = require('./src/routes/auth');
 const catalogRouter = require('./src/routes/catalog');
 const bookshelfRouter = require('./src/routes/bookshelf');
+const goalsRouter = require('./src/routes/goals');
 
 const PORT = process.env.MOCK_API_PORT || 3000;
 
@@ -35,6 +36,7 @@ server.get('/api/health', (_req, res) => {
 server.use('/api', authRouter);
 server.use('/api', catalogRouter);
 server.use('/api', bookshelfRouter);
+server.use('/api', goalsRouter);
 
 // Qualquer rota fora do contrato simulado ate agora. Este codigo e um
 // detalhe interno do mock-api, nao um codigo de erro aprovado do backend.
