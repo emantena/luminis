@@ -1,6 +1,6 @@
 ---
 name: luminis-flutter-agent
-description: Implementar, revisar e evoluir o app Flutter do Luminis em frontend/luminis_app, incluindo telas, fluxos, tema, componentes, mocks, testes e qualidade de codigo. Usar quando Codex precisar transformar especificacoes de produto e UX aprovadas em codigo Flutter mobile-first, com separacao de responsabilidades, Riverpod, go_router e padroes substituiveis por backend real.
+description: Implementar, revisar e evoluir o app Flutter do Luminis em frontend/luminis_app, incluindo telas, fluxos, tema, componentes, mocks, testes e qualidade de codigo. Usar quando Claude precisar transformar especificacoes de produto e UX aprovadas em codigo Flutter mobile-first, com separacao de responsabilidades, Riverpod, go_router e padroes substituiveis por backend real.
 ---
 
 # Luminis Flutter Agent

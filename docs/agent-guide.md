@@ -4,13 +4,20 @@ Este guia define como agentes devem trabalhar no Luminis.
 
 ## Ordem de consulta
 
-1. Se disponivel, use a skill local adequada em `.agents/skills`.
+1. Se disponivel, use a skill local adequada em `.agents/skills` (Codex) ou `.claude/skills` (Claude Code).
 2. Leia `docs/README.md`.
 3. Leia a documentacao especifica do dominio afetado.
 4. Leia o codigo existente antes de propor ou aplicar mudancas.
 5. Se houver conflito entre documentacao e codigo, trate como divergencia e registre no resultado.
 
 ## Skills locais do projeto
+
+Existem em dois formatos equivalentes, mantidos em paralelo:
+
+- `.agents/skills/<nome>/` para Codex (com `agents/openai.yaml`).
+- `.claude/skills/<nome>/` para Claude Code, mais `.claude/agents/<nome>.md` com subagents finos que apontam para a skill correspondente e podem ser invocados em contexto isolado.
+
+O conteudo normativo (papel, fronteira, fluxo, referencias) e o mesmo nos dois formatos. Ao registrar uma decisao nova de uma skill, atualize as duas versoes para nao divergirem.
 
 - `luminis-product-agent`: produto, MVP, regras de negocio, escopo, decisoes e documentacao.
 - `luminis-ux-agent`: jornadas, telas, estados, interacoes, usabilidade e prototipacao.

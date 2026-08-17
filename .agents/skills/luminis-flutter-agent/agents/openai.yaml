@@ -1,4 +1,4 @@
 interface:
   display_name: "Luminis Flutter Agent"
-  short_description: "Especialista Flutter do Luminis"
-  default_prompt: "Use $luminis-flutter-agent para implementar o app Flutter do Luminis com go_router, Riverpod e arquitetura aprovada."
+  short_description: "Flutter com arquitetura e qualidade"
+  default_prompt: "Use $luminis-flutter-agent para implementar um fluxo Flutter do Luminis conforme produto, UX e arquitetura aprovados."

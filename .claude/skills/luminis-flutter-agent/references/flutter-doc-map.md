@@ -54,6 +54,10 @@ Consultar `docs/ux/information-architecture.md` e `docs/ux/navigation.md` soment
 - Modelo de dominio: `docs/architecture/domain-model.md`
 - Entidades/schema: `docs/data/entities.md`, `docs/data/database-schema-mvp.md`
 
+## Fronteira De Mock HTTP
+
+- Decisao de usar `json-server` como fronteira HTTP de mock: `docs/adr/ADR-009-json-server-contract-mock-boundary.md`
+
 ## Checklist Antes De Codar
 
 - Confirmar se o pedido e prototipo mockado ou codigo definitivo.
