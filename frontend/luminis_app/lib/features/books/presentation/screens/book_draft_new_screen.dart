@@ -251,7 +251,7 @@ class _PrivateDraftNotice extends StatelessWidget {
     child: const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Livro privado no MVP'),
+        Text('Livro privado'),
         SizedBox(height: 4),
         Text(
           'Ele será usado apenas na sua estante e não entrará no catálogo global.',

@@ -133,7 +133,7 @@ class _ReadingProgressNewScreenState
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
           title: const Text('Publicar progresso'),
-          subtitle: const Text('Privado por padrão no MVP'),
+          subtitle: const Text('Privado por padrão'),
           value: _isPublic,
           onChanged: (value) => setState(() => _isPublic = value),
         ),
