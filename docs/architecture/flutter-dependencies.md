@@ -8,8 +8,11 @@ Data: 2026-08-07.
 
 ```yaml
 dependencies:
+  flutter_localizations:
+    sdk: flutter
   go_router: ^17.3.0
   flutter_riverpod: ^3.4.1
+  http: ^1.6.0
 
 dev_dependencies:
   flutter_lints: ^6.0.0
@@ -32,6 +35,8 @@ dev_dependencies:
 
 - `go_router` e a biblioteca aprovada para navegacao declarativa, deep links futuros e shell autenticado.
 - `flutter_riverpod` e a biblioteca aprovada para estado e injecao de dependencia.
+- `http` e o cliente HTTP aprovado para consumir `mock-api/` (ADR-009) e, depois, a API .NET real. Ver `docs/adr/ADR-010-flutter-http-client-package.md`.
+- `flutter_localizations` e a dependencia SDK usada para localizar componentes Material/Cupertino do Flutter em `pt_BR`, incluindo date pickers.
 - Codegen Riverpod fica opcional para nao aumentar complexidade antes da necessidade real.
 
 ## Regras

@@ -1,0 +1,29 @@
+[
+  {
+    "_scenario": "usuario ja vinculado ao Google (retorna usr_carla_dias existente)",
+    "idToken": "mock-google-token-carla-linked",
+    "providerUserId": "google-uid-carla-dias",
+    "providerEmail": "carla.dias@leitores.mock",
+    "verifiedEmail": true,
+    "displayName": "Carla Dias",
+    "photoUrl": null
+  },
+  {
+    "_scenario": "novo usuario via Google, sem credencial local previa (cria usuario)",
+    "idToken": "mock-google-token-novo-usuario",
+    "providerUserId": "google-uid-novo-usuario",
+    "providerEmail": "novo.leitor@leitores.mock",
+    "verifiedEmail": true,
+    "displayName": "Novo Leitor",
+    "photoUrl": null
+  },
+  {
+    "_scenario": "email do Google nao verificado, coincide com credencial local de usr_ana_lima; nao deve vincular automaticamente (cria usuario novo em vez de linkar)",
+    "idToken": "mock-google-token-email-nao-verificado",
+    "providerUserId": "google-uid-nao-verificado",
+    "providerEmail": "ana.lima@leitores.mock",
+    "verifiedEmail": false,
+    "displayName": "Ana Lima",
+    "photoUrl": null
+  }
+]

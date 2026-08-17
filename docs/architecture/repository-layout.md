@@ -21,12 +21,15 @@ Fonte de verdade para produto, arquitetura, regras de negocio, contratos, schema
 
 ### backend/
 
-Raiz futura da solucao .NET, projetos por modulo, testes e migrations DbUp.
+Raiz futura da solucao .NET, projetos por modulo, testes e migrations DbUp. Tambem hospeda `mock-api/`, o servico Node/`json-server` que simula a fronteira HTTP ate a API .NET existir (`docs/adr/ADR-009-json-server-contract-mock-boundary.md`).
 
 Estrutura futura candidata:
 
 ```text
 backend/
+  mock-api/
+    package.json
+    db.json
   Luminis.sln
   src/
   tests/

@@ -4,4 +4,8 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- A mock API local usa HTTP durante o desenvolvimento via adb reverse.
+         Esta exceção existe somente na variante debug; builds de produção não
+         recebem permissão para tráfego em texto simples. -->
+    <application android:usesCleartextTraffic="true" />
 </manifest>

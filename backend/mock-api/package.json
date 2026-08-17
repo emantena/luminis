@@ -1,0 +1,19 @@
+{
+  "name": "luminis-mock-api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Fronteira HTTP de mock do Luminis (ADR-009). Servico Node de desenvolvimento local; nao e backend de producao nem fonte de verdade de regra de negocio.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "ensure": "node scripts/ensure-mock-api.cjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "json-server": "0.17.4"
+  }
+}

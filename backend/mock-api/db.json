@@ -1,0 +1,264 @@
+{
+  "users": [
+    {
+      "id": "usr_ana_lima",
+      "displayName": "Ana Lima",
+      "photoUrl": null,
+      "bio": null,
+      "status": "active",
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "usr_bruno_faria",
+      "displayName": "Bruno Faria",
+      "photoUrl": null,
+      "bio": null,
+      "status": "active",
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "usr_carla_dias",
+      "displayName": "Carla Dias",
+      "photoUrl": null,
+      "bio": "Leio ficcao cientifica e biografias.",
+      "status": "active",
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    }
+  ],
+
+  "passwordCredentials": [
+    {
+      "userId": "usr_ana_lima",
+      "email": "ana.lima@leitores.mock",
+      "password": "Leitura#2024",
+      "failedAttempts": 0,
+      "lockedUntil": null,
+      "lastLoginAt": null
+    },
+    {
+      "userId": "usr_bruno_faria",
+      "email": "bruno.faria@leitores.mock",
+      "password": "Conta#Bloqueada1",
+      "failedAttempts": 5,
+      "lockedUntil": "2099-01-01T00:00:00.000Z",
+      "lastLoginAt": null
+    },
+    {
+      "userId": "usr_carla_dias",
+      "email": "carla.dias@leitores.mock",
+      "password": "SenhaSegura#9",
+      "failedAttempts": 0,
+      "lockedUntil": null,
+      "lastLoginAt": null
+    }
+  ],
+
+  "externalLogins": [
+    {
+      "userId": "usr_carla_dias",
+      "provider": "google",
+      "providerUserId": "google-uid-carla-dias",
+      "providerEmail": "carla.dias@leitores.mock",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "lastLoginAt": null
+    }
+  ],
+
+  "catalogBooks": [
+    {
+      "id": "book_bras_cubas",
+      "title": "Memórias Póstumas de Brás Cubas",
+      "subtitle": null,
+      "description": "Romance clássico de Machado de Assis, narrado por um defunto-autor.",
+      "originalTitle": null,
+      "authors": [{ "id": "author_machado_de_assis", "name": "Machado de Assis" }],
+      "subjects": [{ "id": "subject_literatura_brasileira", "name": "Literatura brasileira" }],
+      "editions": [
+        {
+          "id": "edition_bras_cubas_companhia",
+          "title": "Memórias Póstumas de Brás Cubas",
+          "subtitle": null,
+          "coverUrl": "https://covers.luminis.dev/editions/bras-cubas.jpg",
+          "publisher": { "id": "publisher_companhia_das_letras", "name": "Companhia das Letras", "logoUrl": "https://covers.luminis.dev/publishers/companhia-das-letras.png" },
+          "publishedYear": 2014,
+          "language": "pt-BR",
+          "format": "paperback",
+          "pageCount": 208,
+          "isbn10": "8582850128",
+          "isbn13": "9788582850121"
+        }
+      ]
+    },
+    {
+      "id": "book_dom_casmurro",
+      "title": "Dom Casmurro",
+      "subtitle": null,
+      "description": "Um dos romances mais conhecidos de Machado de Assis.",
+      "originalTitle": null,
+      "authors": [{ "id": "author_machado_de_assis", "name": "Machado de Assis" }],
+      "subjects": [{ "id": "subject_literatura_brasileira", "name": "Literatura brasileira" }],
+      "editions": [
+        {
+          "id": "edition_dom_casmurro_companhia",
+          "title": "Dom Casmurro",
+          "subtitle": null,
+          "coverUrl": "https://covers.luminis.dev/editions/dom-casmurro-companhia.jpg",
+          "publisher": { "id": "publisher_companhia_das_letras", "name": "Companhia das Letras", "logoUrl": "https://covers.luminis.dev/publishers/companhia-das-letras.png" },
+          "publishedYear": 2008,
+          "language": "pt-BR",
+          "format": "paperback",
+          "pageCount": 256,
+          "isbn10": "8535910667",
+          "isbn13": "9788535910663"
+        },
+        {
+          "id": "edition_dom_casmurro_popular",
+          "title": "Dom Casmurro",
+          "subtitle": null,
+          "coverUrl": null,
+          "publisher": { "id": "publisher_editora_popular", "name": "Editora Popular", "logoUrl": null },
+          "publishedYear": 1999,
+          "language": "pt-BR",
+          "format": "paperback",
+          "pageCount": 240,
+          "isbn10": null,
+          "isbn13": null
+        }
+      ]
+    },
+    {
+      "id": "book_quincas_borba",
+      "title": "Quincas Borba",
+      "subtitle": null,
+      "description": "Romance de Machado de Assis sobre ambição e loucura.",
+      "originalTitle": null,
+      "authors": [{ "id": "author_machado_de_assis", "name": "Machado de Assis" }],
+      "subjects": [{ "id": "subject_literatura_brasileira", "name": "Literatura brasileira" }],
+      "editions": [
+        {
+          "id": "edition_quincas_borba_companhia",
+          "title": "Quincas Borba",
+          "subtitle": null,
+          "coverUrl": "https://covers.luminis.dev/editions/quincas-borba.jpg",
+          "publisher": { "id": "publisher_companhia_das_letras", "name": "Companhia das Letras", "logoUrl": "https://covers.luminis.dev/publishers/companhia-das-letras.png" },
+          "publishedYear": 2012,
+          "language": "pt-BR",
+          "format": "paperback",
+          "pageCount": 264,
+          "isbn10": null,
+          "isbn13": "9788535911233"
+        }
+      ]
+    },
+    {
+      "id": "book_seed_abandoned",
+      "title": "O Ateneu",
+      "subtitle": null,
+      "description": "Romance brasileiro de Raul Pompeia.",
+      "originalTitle": null,
+      "authors": [{ "id": "author_raul_pompeia", "name": "Raul Pompeia" }],
+      "subjects": [{ "id": "subject_literatura_brasileira", "name": "Literatura brasileira" }],
+      "editions": [
+        {
+          "id": "edition_seed_abandoned",
+          "title": "O Ateneu",
+          "subtitle": null,
+          "coverUrl": null,
+          "publisher": { "id": "publisher_editora_popular", "name": "Editora Popular", "logoUrl": null },
+          "publishedYear": 2019,
+          "language": "pt-BR",
+          "format": "paperback",
+          "pageCount": 192,
+          "isbn10": null,
+          "isbn13": null
+        }
+      ]
+    }
+  ],
+
+  "bookDrafts": [
+    {
+      "id": "draft_local_seed_1",
+      "userId": "usr_ana_lima",
+      "title": "Poemas Inéditos de Uma Leitora",
+      "authors": ["Autor Desconhecido"],
+      "edition": { "publisher": null, "publishedYear": null, "language": null, "format": "paperback", "pageCount": 96, "isbn10": null, "isbn13": null, "coverUrl": null },
+      "createdAt": "2026-06-01T00:00:00.000Z"
+    }
+  ],
+
+  "bookshelfItems": [
+    {
+      "id": "bookshelf_item_seed_want_to_read",
+      "userId": "usr_ana_lima",
+      "target": { "type": "book", "bookId": "book_quincas_borba", "editionId": "edition_quincas_borba_companhia" },
+      "readingStatus": "want_to_read",
+      "tags": { "isFavorite": false, "isOwned": false, "isWished": false, "isBorrowed": false, "isLent": false, "isEbook": false, "isAudiobook": false },
+      "startedAt": null,
+      "finishedAt": null,
+      "addedAt": "2026-07-01T00:00:00.000Z",
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "removedAt": null
+    },
+    {
+      "id": "bookshelf_item_seed_reading",
+      "userId": "usr_ana_lima",
+      "target": { "type": "book", "bookId": "book_bras_cubas", "editionId": "edition_bras_cubas_companhia" },
+      "readingStatus": "reading",
+      "tags": { "isFavorite": false, "isOwned": true, "isWished": false, "isBorrowed": false, "isLent": false, "isEbook": false, "isAudiobook": false },
+      "startedAt": "2026-08-01T00:00:00.000Z",
+      "finishedAt": null,
+      "addedAt": "2026-07-02T00:00:00.000Z",
+      "updatedAt": "2026-08-01T00:00:00.000Z",
+      "removedAt": null
+    },
+    {
+      "id": "bookshelf_item_seed_paused",
+      "userId": "usr_ana_lima",
+      "target": { "type": "draft", "userBookDraftId": "draft_local_seed_1" },
+      "readingStatus": "paused",
+      "tags": { "isFavorite": false, "isOwned": false, "isWished": false, "isBorrowed": false, "isLent": false, "isEbook": false, "isAudiobook": false },
+      "startedAt": "2026-06-10T00:00:00.000Z",
+      "finishedAt": null,
+      "addedAt": "2026-06-05T00:00:00.000Z",
+      "updatedAt": "2026-07-20T00:00:00.000Z",
+      "removedAt": null
+    },
+    {
+      "id": "bookshelf_item_seed_read",
+      "userId": "usr_ana_lima",
+      "target": { "type": "book", "bookId": "book_dom_casmurro", "editionId": "edition_dom_casmurro_companhia" },
+      "readingStatus": "read",
+      "tags": { "isFavorite": true, "isOwned": true, "isWished": false, "isBorrowed": false, "isLent": false, "isEbook": false, "isAudiobook": false },
+      "startedAt": "2026-03-02T00:00:00.000Z",
+      "finishedAt": "2026-04-15T00:00:00.000Z",
+      "addedAt": "2026-03-01T00:00:00.000Z",
+      "updatedAt": "2026-04-15T00:00:00.000Z",
+      "removedAt": null
+    },
+    {
+      "id": "bookshelf_item_seed_rereading",
+      "userId": "usr_ana_lima",
+      "target": { "type": "book", "bookId": "book_dom_casmurro", "editionId": "edition_dom_casmurro_popular" },
+      "readingStatus": "rereading",
+      "tags": { "isFavorite": false, "isOwned": false, "isWished": false, "isBorrowed": false, "isLent": false, "isEbook": false, "isAudiobook": false },
+      "startedAt": "2026-08-05T00:00:00.000Z",
+      "finishedAt": null,
+      "addedAt": "2026-08-01T00:00:00.000Z",
+      "updatedAt": "2026-08-05T00:00:00.000Z",
+      "removedAt": null
+    },
+    {
+      "id": "bookshelf_item_seed_abandoned",
+      "userId": "usr_ana_lima",
+      "target": { "type": "book", "bookId": "book_seed_abandoned", "editionId": "edition_seed_abandoned" },
+      "readingStatus": "abandoned",
+      "tags": { "isFavorite": false, "isOwned": false, "isWished": false, "isBorrowed": false, "isLent": false, "isEbook": false, "isAudiobook": false },
+      "startedAt": "2026-01-12T00:00:00.000Z",
+      "finishedAt": "2026-02-01T00:00:00.000Z",
+      "addedAt": "2026-01-10T00:00:00.000Z",
+      "updatedAt": "2026-02-01T00:00:00.000Z",
+      "removedAt": null
+    }
+  ]
+}
