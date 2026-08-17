@@ -4,6 +4,7 @@ const express = require('express');
 const state = require('../state');
 const { sendError } = require('../errors');
 const { requireAuth } = require('../authMiddleware');
+const { contributorsForGoal } = require('../readingHelpers');
 
 const router = express.Router();
 
@@ -32,47 +33,9 @@ function daysBetween(start, end) {
   return Math.round((parseDateOnly(end) - parseDateOnly(start)) / millisecondsPerDay);
 }
 
-function defaultContributors(goal, value) {
-  if (value <= 0) return [];
-  if (goal.metricType === 'books_read') {
-    if (value <= 1) {
-      return [
-        {
-          title: 'Memorias Postumas de Bras Cubas',
-          value: 1,
-          description: 'Leitura concluida no periodo.',
-        },
-      ];
-    }
-    return [
-      {
-        title: 'Memorias Postumas de Bras Cubas',
-        value: value - 1,
-        description: 'Leitura concluida no periodo.',
-      },
-      {
-        title: 'Dom Casmurro',
-        value: 1,
-        description: 'Releitura concluida conta como nova leitura.',
-      },
-    ];
-  }
-  return [
-    {
-      title: 'Dom Casmurro',
-      value,
-      description: 'Paginas novas lidas no periodo.',
-    },
-  ];
-}
-
-function calculatedValue(goal) {
-  return Number.isInteger(goal.mockProgressValue) ? goal.mockProgressValue : goal.metricType === 'pages_read' ? 120 : 2;
-}
-
 function withCurrentStatus(goal) {
   if (goal.status !== 'active') return goal;
-  const currentValue = calculatedValue(goal);
+  const currentValue = contributorsForGoal(goal).reduce((sum, contributor) => sum + contributor.value, 0);
   if (currentValue < goal.targetValue) return goal;
   goal.status = 'completed';
   goal.completedAt = goal.completedAt || nowIso();
@@ -81,7 +44,8 @@ function withCurrentStatus(goal) {
 }
 
 function progressFor(goal) {
-  const currentValue = calculatedValue(goal);
+  const contributors = contributorsForGoal(goal);
+  const currentValue = contributors.reduce((sum, contributor) => sum + contributor.value, 0);
   const remainingValue = Math.max(goal.targetValue - currentValue, 0);
   const bonusValue = Math.max(currentValue - goal.targetValue, 0);
   const percentage = goal.targetValue > 0 ? Math.min((currentValue / goal.targetValue) * 100, 100) : 0;
@@ -97,7 +61,7 @@ function progressFor(goal) {
     isExceeded: bonusValue > 0,
     isExpired,
     needsAttention: isExpired,
-    contributors: goal.mockContributors || defaultContributors(goal, currentValue),
+    contributors,
     calculatedAt: nowIso(),
   };
 }
@@ -245,7 +209,6 @@ router.post('/reading-goals', requireAuth, (req, res) => {
     createdAt: now,
     updatedAt: now,
     deletedAt: null,
-    mockProgressValue: body.metricType === 'pages_read' ? 120 : 2,
   };
   state.readingGoals.push(withCurrentStatus(goal));
   return res.status(201).json(toResponse(goal));

@@ -262,6 +262,170 @@
     }
   ],
 
+  "readingSessions": [
+    {
+      "id": "reading_session_seed_active",
+      "bookshelfItemId": "bookshelf_item_seed_reading",
+      "status": "active",
+      "startedAt": "2026-08-01T00:00:00.000Z",
+      "finishedAt": null
+    },
+    {
+      "id": "reading_session_seed_paused",
+      "bookshelfItemId": "bookshelf_item_seed_paused",
+      "status": "paused",
+      "startedAt": "2026-06-10T00:00:00.000Z",
+      "finishedAt": null
+    },
+    {
+      "id": "reading_session_seed_july_pages",
+      "bookshelfItemId": "bookshelf_item_seed_read",
+      "status": "finished",
+      "startedAt": "2026-07-01T00:00:00.000Z",
+      "finishedAt": "2026-07-20T00:00:00.000Z"
+    },
+    {
+      "id": "reading_session_seed_finished_01",
+      "bookshelfItemId": "bookshelf_item_seed_read",
+      "status": "finished",
+      "startedAt": "2026-01-02T00:00:00.000Z",
+      "finishedAt": "2026-01-10T00:00:00.000Z"
+    },
+    {
+      "id": "reading_session_seed_finished_02",
+      "bookshelfItemId": "bookshelf_item_seed_read",
+      "status": "finished",
+      "startedAt": "2026-01-12T00:00:00.000Z",
+      "finishedAt": "2026-01-20T00:00:00.000Z"
+    },
+    {
+      "id": "reading_session_seed_finished_03",
+      "bookshelfItemId": "bookshelf_item_seed_read",
+      "status": "finished",
+      "startedAt": "2026-02-02T00:00:00.000Z",
+      "finishedAt": "2026-02-10T00:00:00.000Z"
+    },
+    {
+      "id": "reading_session_seed_finished_04",
+      "bookshelfItemId": "bookshelf_item_seed_read",
+      "status": "finished",
+      "startedAt": "2026-02-12T00:00:00.000Z",
+      "finishedAt": "2026-02-20T00:00:00.000Z"
+    },
+    {
+      "id": "reading_session_seed_finished_05",
+      "bookshelfItemId": "bookshelf_item_seed_read",
+      "status": "finished",
+      "startedAt": "2026-03-02T00:00:00.000Z",
+      "finishedAt": "2026-03-10T00:00:00.000Z"
+    },
+    {
+      "id": "reading_session_seed_finished_06",
+      "bookshelfItemId": "bookshelf_item_seed_read",
+      "status": "finished",
+      "startedAt": "2026-03-12T00:00:00.000Z",
+      "finishedAt": "2026-03-20T00:00:00.000Z"
+    },
+    {
+      "id": "reading_session_seed_finished_07",
+      "bookshelfItemId": "bookshelf_item_seed_read",
+      "status": "finished",
+      "startedAt": "2026-04-02T00:00:00.000Z",
+      "finishedAt": "2026-04-10T00:00:00.000Z"
+    },
+    {
+      "id": "reading_session_seed_finished_08",
+      "bookshelfItemId": "bookshelf_item_seed_read",
+      "status": "finished",
+      "startedAt": "2026-04-12T00:00:00.000Z",
+      "finishedAt": "2026-04-20T00:00:00.000Z"
+    },
+    {
+      "id": "reading_session_seed_finished_09",
+      "bookshelfItemId": "bookshelf_item_seed_read",
+      "status": "finished",
+      "startedAt": "2026-05-02T00:00:00.000Z",
+      "finishedAt": "2026-05-10T00:00:00.000Z"
+    },
+    {
+      "id": "reading_session_seed_finished_10",
+      "bookshelfItemId": "bookshelf_item_seed_read",
+      "status": "finished",
+      "startedAt": "2026-05-12T00:00:00.000Z",
+      "finishedAt": "2026-05-20T00:00:00.000Z"
+    },
+    {
+      "id": "reading_session_seed_finished_11",
+      "bookshelfItemId": "bookshelf_item_seed_read",
+      "status": "finished",
+      "startedAt": "2026-06-02T00:00:00.000Z",
+      "finishedAt": "2026-06-10T00:00:00.000Z"
+    },
+    {
+      "id": "reading_session_seed_finished_12",
+      "bookshelfItemId": "bookshelf_item_seed_read",
+      "status": "interrupted",
+      "startedAt": "2026-06-12T00:00:00.000Z",
+      "finishedAt": "2026-06-20T00:00:00.000Z"
+    },
+    {
+      "id": "reading_session_seed_finished_13",
+      "bookshelfItemId": "bookshelf_item_seed_read",
+      "status": "finished",
+      "startedAt": "2026-08-01T00:00:00.000Z",
+      "finishedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+      "id": "reading_session_seed_finished_14",
+      "bookshelfItemId": "bookshelf_item_seed_read",
+      "status": "finished",
+      "startedAt": "2026-08-08T00:00:00.000Z",
+      "finishedAt": "2026-08-10T00:00:00.000Z"
+    }
+  ],
+
+  "readingProgressEntries": [
+    {
+      "id": "reading_progress_seed_active_1",
+      "readingSessionId": "reading_session_seed_active",
+      "pageNumber": 120,
+      "percentage": null,
+      "note": null,
+      "isPublic": false,
+      "createdAt": "2026-08-15T22:00:00.000Z"
+    },
+    {
+      "id": "reading_progress_seed_paused_1",
+      "readingSessionId": "reading_session_seed_paused",
+      "pageNumber": 42,
+      "percentage": 44,
+      "note": null,
+      "isPublic": false,
+      "createdAt": "2026-06-20T21:00:00.000Z"
+    },
+    {
+      "id": "reading_progress_seed_july_pages_1",
+      "readingSessionId": "reading_session_seed_july_pages",
+      "pageNumber": 80,
+      "percentage": null,
+      "note": null,
+      "isPublic": false,
+      "createdAt": "2026-07-20T12:00:00.000Z"
+    }
+  ],
+
+  "readingPlans": [
+    {
+      "id": "reading_plan_seed_active",
+      "bookshelfItemId": "bookshelf_item_seed_reading",
+      "status": "active",
+      "startDate": "2026-08-07",
+      "targetFinishDate": "2026-09-30",
+      "createdAt": "2026-08-07T00:00:00.000Z",
+      "updatedAt": "2026-08-07T00:00:00.000Z"
+    }
+  ],
+
   "readingGoals": [
     {
       "id": "goal_monthly_pages_active",
@@ -277,15 +441,7 @@
       "cancelledAt": null,
       "createdAt": "2026-08-01T00:00:00.000Z",
       "updatedAt": "2026-08-16T00:00:00.000Z",
-      "deletedAt": null,
-      "mockProgressValue": 120,
-      "mockContributors": [
-        {
-          "title": "Dom Casmurro",
-          "value": 120,
-          "description": "Paginas novas lidas no periodo."
-        }
-      ]
+      "deletedAt": null
     },
     {
       "id": "goal_yearly_books_bonus",
@@ -301,20 +457,7 @@
       "cancelledAt": null,
       "createdAt": "2026-01-01T00:00:00.000Z",
       "updatedAt": "2026-08-10T00:00:00.000Z",
-      "deletedAt": null,
-      "mockProgressValue": 14,
-      "mockContributors": [
-        {
-          "title": "Memorias Postumas de Bras Cubas",
-          "value": 13,
-          "description": "Leitura concluida no periodo."
-        },
-        {
-          "title": "Dom Casmurro",
-          "value": 1,
-          "description": "Releitura concluida conta como nova leitura."
-        }
-      ]
+      "deletedAt": null
     },
     {
       "id": "goal_expired_pages_attention",
@@ -330,15 +473,7 @@
       "cancelledAt": null,
       "createdAt": "2026-07-01T00:00:00.000Z",
       "updatedAt": "2026-07-31T00:00:00.000Z",
-      "deletedAt": null,
-      "mockProgressValue": 80,
-      "mockContributors": [
-        {
-          "title": "Dom Casmurro",
-          "value": 80,
-          "description": "Paginas novas lidas no periodo."
-        }
-      ]
+      "deletedAt": null
     }
   ]
 }

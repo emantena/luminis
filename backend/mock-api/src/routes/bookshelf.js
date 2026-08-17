@@ -4,6 +4,7 @@ const express = require('express');
 const state = require('../state');
 const { sendError } = require('../errors');
 const { requireAuth } = require('../authMiddleware');
+const { applyReadingStatus, toBookshelfItemResponse } = require('../readingHelpers');
 
 const router = express.Router();
 const READING_STATUSES = new Set(['want_to_read', 'reading', 'paused', 'read', 'rereading', 'abandoned']);
@@ -121,7 +122,7 @@ router.get('/bookshelf-items', requireAuth, (req, res) => {
     })
     .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt) || Date.parse(b.addedAt) - Date.parse(a.addedAt));
   const start = (pagination.page - 1) * pagination.limit;
-  const items = matches.slice(start, start + pagination.limit).map(toResponse);
+  const items = matches.slice(start, start + pagination.limit).map(toBookshelfItemResponse);
   return res.status(200).json({
     items,
     page: pagination.page,
@@ -169,7 +170,8 @@ router.post('/bookshelf-items', requireAuth, (req, res) => {
     finishedAt: readingStatus === 'read' ? now : null,
   };
   state.bookshelfItems.push(item);
-  return res.status(201).json(toResponse(item));
+  applyReadingStatus(item, readingStatus);
+  return res.status(201).json(toBookshelfItemResponse(item));
 });
 
 // PATCH /api/bookshelf-items/:bookshelfItemId/tags
@@ -184,30 +186,34 @@ router.patch('/bookshelf-items/:bookshelfItemId/tags', requireAuth, (req, res) =
   if (!item) return;
   for (const key of suppliedKeys) item.tags[key] = body[key];
   item.updatedAt = new Date().toISOString();
-  return res.status(200).json(toResponse(item));
+  return res.status(200).json(toBookshelfItemResponse(item));
 });
 
 // PATCH /api/bookshelf-items/:bookshelfItemId/reading-status
 router.patch('/bookshelf-items/:bookshelfItemId/reading-status', requireAuth, (req, res) => {
-  const { readingStatus } = req.body || {};
+  const { readingStatus, sessionAction } = req.body || {};
   if (!READING_STATUSES.has(readingStatus)) {
     return sendError(req, res, 400, 'validation.failed', 'Existem campos invalidos.', { readingStatus: ['readingStatus e obrigatorio e invalido.'] });
   }
+  if (sessionAction !== undefined && sessionAction !== 'keep_paused' && sessionAction !== 'interrupt') {
+    return sendError(req, res, 400, 'validation.failed', 'Existem campos invalidos.', { sessionAction: ['sessionAction e invalido.'] });
+  }
   const item = requireActiveItem(req, res);
   if (!item) return;
-  const now = new Date().toISOString();
-  item.readingStatus = readingStatus;
-  if ((readingStatus === 'reading' || readingStatus === 'rereading') && !item.startedAt) item.startedAt = now;
-  if (readingStatus === 'reading' || readingStatus === 'rereading') item.finishedAt = null;
-  if (readingStatus === 'read' || readingStatus === 'abandoned') item.finishedAt = now;
-  item.updatedAt = now;
-  return res.status(200).json(toResponse(item));
+  const result = applyReadingStatus(item, readingStatus, sessionAction);
+  if (result.error) {
+    return sendError(req, res, 400, 'validation.failed', 'Existem campos invalidos.', {
+      [result.error.field]: [result.error.message],
+    });
+  }
+  return res.status(200).json(toBookshelfItemResponse(item));
 });
 
 // DELETE /api/bookshelf-items/:bookshelfItemId (soft delete)
 router.delete('/bookshelf-items/:bookshelfItemId', requireAuth, (req, res) => {
   const item = requireActiveItem(req, res);
   if (!item) return;
+  applyReadingStatus(item, 'want_to_read', 'interrupt');
   item.removedAt = new Date().toISOString();
   item.updatedAt = item.removedAt;
   return res.status(204).send();

@@ -1,8 +1,11 @@
 import '../../../../shared/infrastructure/api_exception.dart';
+import '../../../../shared/infrastructure/api_client.dart';
+import '../../../bookshelf/data/mappers/bookshelf_mapper.dart';
 import '../../../bookshelf/domain/entities/bookshelf_item.dart';
 import '../../../bookshelf/domain/entities/reading_status.dart';
 import '../../../bookshelf/domain/repositories/bookshelf_repository.dart';
 import '../../../bookshelf/domain/value_objects/bookshelf_filter.dart';
+import '../mappers/reading_mapper.dart';
 import '../../domain/entities/reading_pace.dart';
 import '../../domain/entities/reading_plan.dart';
 import '../../domain/entities/reading_progress_entry.dart';
@@ -11,7 +14,161 @@ import '../../domain/entities/reading_state_snapshot.dart';
 import '../../domain/repositories/reading_repository.dart';
 
 class ReadingRepositoryImpl implements ReadingRepository {
-  ReadingRepositoryImpl({
+  ReadingRepositoryImpl(this._apiClient, {this.bearerToken});
+
+  final ApiClient _apiClient;
+  final String? bearerToken;
+
+  @override
+  Future<List<ReadingStateSnapshot>> listContinuableReadings() async {
+    final responses = await Future.wait([
+      _listContinuableByStatus(ReadingStatus.reading),
+      _listContinuableByStatus(ReadingStatus.rereading),
+      _listContinuableByStatus(ReadingStatus.paused),
+    ]);
+    final itemIds = responses
+        .expand((items) => items)
+        .map((item) => item.id)
+        .toSet()
+        .toList(growable: false);
+    final snapshots = await Future.wait(
+      itemIds.map((id) => getReadingState(bookshelfItemId: id)),
+    );
+    snapshots.sort(_continuitySort);
+    return snapshots;
+  }
+
+  @override
+  Future<ReadingStateSnapshot> getReadingState({
+    required String bookshelfItemId,
+  }) async {
+    final response = await _apiClient.get(
+      '/bookshelf-items/${Uri.encodeComponent(bookshelfItemId)}/reading-state',
+      bearerToken: bearerToken,
+    );
+    return ReadingMapper.stateFromJson(response as Map<String, dynamic>);
+  }
+
+  @override
+  Future<ReadingStateSnapshot> resumeReading({
+    required String bookshelfItemId,
+  }) {
+    return updateReadingStatus(
+      bookshelfItemId: bookshelfItemId,
+      readingStatus: ReadingStatus.reading,
+    );
+  }
+
+  @override
+  Future<ReadingStateSnapshot> updateReadingStatus({
+    required String bookshelfItemId,
+    required ReadingStatus readingStatus,
+    WantToReadSessionAction? sessionAction,
+  }) async {
+    await _apiClient.patch(
+      '/bookshelf-items/${Uri.encodeComponent(bookshelfItemId)}/reading-status',
+      bearerToken: bearerToken,
+      body: {
+        'readingStatus': readingStatus.wireValue,
+        if (sessionAction != null)
+          'sessionAction': _sessionActionToWire(sessionAction),
+      },
+    );
+    return getReadingState(bookshelfItemId: bookshelfItemId);
+  }
+
+  @override
+  Future<ReadingProgressResult> registerProgress({
+    required String readingSessionId,
+    int? pageNumber,
+    int? percentage,
+    String? note,
+    bool isPublic = false,
+  }) async {
+    final body = <String, Object?>{'isPublic': isPublic};
+    if (pageNumber != null) body['pageNumber'] = pageNumber;
+    if (percentage != null) body['percentage'] = percentage;
+    if (note != null) body['note'] = note;
+
+    final response = await _apiClient.post(
+      '/reading-sessions/${Uri.encodeComponent(readingSessionId)}/progress',
+      bearerToken: bearerToken,
+      body: body,
+    );
+    return ReadingMapper.progressResultFromJson(
+      response as Map<String, dynamic>,
+    );
+  }
+
+  @override
+  Future<ReadingStateSnapshot> savePlan({
+    required String bookshelfItemId,
+    required DateTime targetFinishDate,
+  }) async {
+    await _apiClient.put(
+      '/bookshelf-items/${Uri.encodeComponent(bookshelfItemId)}/reading-plan',
+      bearerToken: bearerToken,
+      body: {
+        'targetFinishDate': ReadingMapper.dateOnlyToWire(targetFinishDate),
+      },
+    );
+    return getReadingState(bookshelfItemId: bookshelfItemId);
+  }
+
+  @override
+  Future<ReadingStateSnapshot> removePlan({
+    required String bookshelfItemId,
+  }) async {
+    await _apiClient.delete(
+      '/bookshelf-items/${Uri.encodeComponent(bookshelfItemId)}/reading-plan',
+      bearerToken: bearerToken,
+    );
+    return getReadingState(bookshelfItemId: bookshelfItemId);
+  }
+
+  Future<List<BookshelfItem>> _listContinuableByStatus(
+    ReadingStatus status,
+  ) async {
+    final query = Uri(
+      queryParameters: {
+        'page': '1',
+        'limit': '50',
+        'readingStatus': status.wireValue,
+      },
+    ).query;
+    final response = await _apiClient.get(
+      '/bookshelf-items?$query',
+      bearerToken: bearerToken,
+    );
+    final items = response as Map<String, dynamic>;
+    return (items['items'] as List<dynamic>)
+        .map(
+          (item) => BookshelfMapper.itemFromJson(item as Map<String, dynamic>),
+        )
+        .toList(growable: false);
+  }
+
+  int _continuitySort(ReadingStateSnapshot a, ReadingStateSnapshot b) {
+    final activeA =
+        a.bookshelfItem.readingStatus == ReadingStatus.reading ||
+        a.bookshelfItem.readingStatus == ReadingStatus.rereading;
+    final activeB =
+        b.bookshelfItem.readingStatus == ReadingStatus.reading ||
+        b.bookshelfItem.readingStatus == ReadingStatus.rereading;
+    if (activeA != activeB) return activeA ? -1 : 1;
+    return b.bookshelfItem.updatedAt.compareTo(a.bookshelfItem.updatedAt);
+  }
+
+  String _sessionActionToWire(WantToReadSessionAction action) {
+    return switch (action) {
+      WantToReadSessionAction.keepPaused => 'keep_paused',
+      WantToReadSessionAction.interrupt => 'interrupt',
+    };
+  }
+}
+
+class InMemoryReadingRepository implements ReadingRepository {
+  InMemoryReadingRepository({
     required this._bookshelfRepository,
     DateTime Function()? now,
   }) : _now = now ?? DateTime.now {
