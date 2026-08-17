@@ -134,6 +134,12 @@ Endpoints de Identity no MVP:
 - `POST /api/auth/forgot-password`
 - `POST /api/auth/reset-password`
 - `GET /api/me`
+- `PATCH /api/me`
+
+Decisoes importantes de edicao de perfil:
+- `PATCH /api/me` atualiza `displayName`, `photoUrl` e `bio`; nao altera email, senha, `status` nem login externo.
+- `displayName` e obrigatorio em toda chamada (nao e patch parcial); `bio` e `photoUrl` sao opcionais e aceitam `null` para limpar.
+- `photoUrl` e uma URL simples; nao ha upload de arquivo binario no MVP (sem `POST /api/me/photo`), conforme `docs/adr/ADR-010-flutter-http-client-package.md`.
 
 Catalog ja esta aprovado para MVP em:
 - `docs/architecture/backend-contracts.md`

@@ -305,6 +305,67 @@ Erros esperados:
 - `auth.unauthorized`
 - `validation.failed`
 
+### Decisao sobre edicao de perfil
+
+Status: Aprovada
+
+Editar nome exibido, foto e bio faz parte do MVP. A tela `/profile/edit` ja esta aprovada em `docs/ux/prototype-screens.md` e listada como pendencia assumida de formulario simples em `docs/ux/flutter-prototype-handoff.md`. Esses campos pertencem ao usuario interno do Luminis e sao de responsabilidade do modulo Identity, que ja expoe `GET /api/me`.
+
+`PATCH /api/me` deve atualizar `displayName`, `photoUrl` e `bio`. Sao os unicos campos editaveis por este contrato; email, senha, `status` e vinculos de login externo tem contratos proprios e nao devem ser alterados aqui.
+
+`displayName` e obrigatorio em toda chamada, pois `users.display_name` e `not null` no schema (`docs/data/database-schema-mvp.md`). A tela de Editar Perfil sempre parte do valor atual preenchido, entao este contrato nao trata `displayName` como atualizacao parcial: cada chamada deve reenviar o nome desejado.
+
+`bio` e `photoUrl` sao opcionais e aceitam `null` explicito para limpar o valor atual, seguindo o mesmo padrao de campos opcionais ja usado no Catalog e no Bookshelf.
+
+### Decisao sobre foto de perfil no MVP
+
+Status: Aprovada
+
+`photoUrl` e uma string simples (URL), nao um upload de arquivo binario. Nao existe contrato de upload (`POST /api/me/photo` ou equivalente) no MVP.
+
+Racional:
+- `docs/adr/ADR-010-flutter-http-client-package.md` ja registra que o cliente HTTP do prototipo nao cobre upload multipart pesado no escopo atual.
+- Upload binario exigiria decidir armazenamento de arquivo (storage, CDN, limite de tamanho, tipos aceitos), o que nao esta definido em nenhuma decisao aprovada e ampliaria o escopo do modulo Identity no MVP.
+- Um `photoUrl` simples preserva `/profile/edit` como formulario curto, conforme `docs/ux/flutter-prototype-handoff.md`.
+
+Consequencia para UX/Flutter: a acao `Alterar foto` de `/profile/edit` deve resultar em uma URL (por exemplo, selecao entre avatares predefinidos ou outro mecanismo que produza uma URL), e nao em selecao de foto do dispositivo com upload de binario. Esse detalhe de interacao pertence a `luminis-ux-agent`/`luminis-flutter-agent`. Upload real de arquivo fica como ponto em aberto para um ciclo futuro, caso vire requisito de produto.
+
+### PATCH /api/me
+
+Objetivo:
+Atualizar nome exibido, foto e bio do usuario autenticado.
+
+Autenticacao:
+Bearer token.
+
+Request:
+
+```json
+{
+  "displayName": "Everton Pereira",
+  "photoUrl": "https://...",
+  "bio": "Leio ficcao cientifica e biografias."
+}
+```
+
+Response: `200 OK`
+
+Mesmo formato de `GET /api/me`.
+
+Regras:
+- `displayName` e obrigatorio em toda chamada, nao pode ser vazio ou composto apenas por espacos, e deve respeitar o limite de 120 caracteres de `users.display_name`.
+- `bio` e opcional; quando informado, deve respeitar o limite de 500 caracteres de `users.bio`; `null` remove a bio atual.
+- `photoUrl` e opcional; quando informado, deve ser uma URL absoluta `http` ou `https`; `null` remove a foto atual.
+- O contrato nao altera `email`, senha, `status` nem vinculos de login externo.
+- Este contrato nao aceita upload de arquivo; `photoUrl` e sempre uma string ja resolvida pelo cliente.
+
+Erros:
+- `auth.unauthorized` com `401 Unauthorized` quando o bearer token estiver ausente ou invalido.
+- `validation.failed` com `400 Bad Request` quando `displayName`, `bio` ou `photoUrl` forem invalidos.
+
+Regras relacionadas:
+- BR-USER-001
+
 ## Catalogo de livros
 
 Status: aprovado para MVP.
@@ -477,11 +538,11 @@ Status: Aprovada
 
 Status: Aprovada
 
-`POST /api/book-drafts` recebe um payload estruturado com `title`, `authors` e `edition`. `title` e obrigatorio e nao vazio; `authors` e `edition` sao opcionais. O campo `edition` usa nomes de propriedades publicos e tipados, e nao expõe o `edition_data` interno do banco.
+`POST /api/book-drafts` recebe um payload estruturado com `title`, `authors` e `edition`. `title` e obrigatorio e nao vazio; `authors` deve conter ao menos um nome nao vazio; `edition` e opcional. O campo `edition` usa nomes de propriedades publicos e tipados, e nao expõe o `edition_data` interno do banco.
 
 O backend converte o objeto `edition` para a persistencia interna de `user_book_drafts.edition_data`.
 
-`title` ausente, vazio ou composto apenas por espacos deve retornar `400 Bad Request` com `validation.failed` e detalhe para o campo `title`.
+`title` ausente, vazio ou composto apenas por espacos, ou `authors` ausente/vazio/com itens vazios, deve retornar `400 Bad Request` com `validation.failed` e detalhe para o respectivo campo.
 
 ### Decisao sobre uso imediato de cadastro local
 
@@ -496,6 +557,14 @@ O fluxo usa duas operacoes explicitas para preservar as responsabilidades dos mo
 Status: Aprovada
 
 `POST /api/book-drafts` deve retornar `201 Created` com o draft completo, incluindo `id`, `title`, `authors`, `edition`, `status` e `createdAt`. O contrato nao expõe `userId`, pois o draft pertence ao usuario autenticado. O `id` retornado e usado posteriormente por `POST /api/bookshelf-items` como `userBookDraftId`.
+
+### Decisao sobre consulta de cadastro local
+
+Status: Aprovada para o prototipo.
+
+`GET /api/book-drafts/{userBookDraftId}` retorna um cadastro local do usuario autenticado no mesmo formato de `POST /api/book-drafts`. A rota permite que a Estante resolva um alvo `draft` por identificador sem duplicar titulo, autores ou edicao em `bookshelf_items`.
+
+Um draft inexistente ou pertencente a outro usuario deve retornar `404 Not Found` com `book_draft.not_found`.
 
 ### DTOs compartilhados do Catalog
 
@@ -633,7 +702,7 @@ Response: `201 Created`
 
 Erros:
 - `auth.unauthorized` com `401 Unauthorized` quando o bearer token estiver ausente ou invalido.
-- `validation.failed` com `400 Bad Request` quando `title` estiver ausente, vazio ou contiver somente espacos.
+- `validation.failed` com `400 Bad Request` quando `title` estiver ausente, vazio ou contiver somente espacos, ou quando `authors` estiver ausente, vazio ou contiver nome vazio.
 
 ````
 
