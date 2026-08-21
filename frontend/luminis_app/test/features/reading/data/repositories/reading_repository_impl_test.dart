@@ -37,6 +37,46 @@ void main() {
     expect(state.pace.dailyPagesTarget, 2);
   });
 
+  test('listContinuableReadings prioriza leitura com progresso', () async {
+    final repository = ReadingRepositoryImpl(
+      ApiClient(
+        baseUrl: 'http://mock.local/api',
+        httpClient: MockClient((request) async {
+          if (request.url.path == '/api/bookshelf-items') {
+            final status = request.url.queryParameters['readingStatus'];
+            return http.Response(
+              jsonEncode({
+                'items': switch (status) {
+                  'reading' => [_bookshelfItemResponse],
+                  'rereading' => [_rereadingItemResponse],
+                  _ => const <Object?>[],
+                },
+                'page': 1,
+                'limit': 50,
+                'hasNextPage': false,
+              }),
+              200,
+            );
+          }
+
+          if (request.url.path.endsWith(
+            '/bookshelf_item_seed_rereading/reading-state',
+          )) {
+            return http.Response(jsonEncode(_rereadingStateResponse), 200);
+          }
+          return http.Response(jsonEncode(_readingStateResponse), 200);
+        }),
+      ),
+    );
+
+    final readings = await repository.listContinuableReadings();
+
+    expect(readings.map((reading) => reading.bookshelfItem.id), [
+      'bookshelf_item_seed_reading',
+      'bookshelf_item_seed_rereading',
+    ]);
+  });
+
   test('registerProgress envia progresso e mapeia resultado', () async {
     final repository = ReadingRepositoryImpl(
       ApiClient(
@@ -190,4 +230,63 @@ const _progressResponse = <String, Object?>{
   'createdAt': '2026-08-17T12:00:00.000Z',
   'readingStatusAfterProgress': 'reading',
   'completedReading': false,
+};
+
+const _rereadingItemResponse = <String, Object?>{
+  'id': 'bookshelf_item_seed_rereading',
+  'target': {
+    'type': 'book',
+    'bookId': 'book_dom_casmurro',
+    'editionId': 'edition_dom_casmurro_popular',
+  },
+  'readingStatus': 'rereading',
+  'tags': {
+    'isFavorite': false,
+    'isOwned': false,
+    'isWished': false,
+    'isBorrowed': false,
+    'isLent': false,
+    'isEbook': false,
+    'isAudiobook': false,
+  },
+  'book': {
+    'id': 'book_dom_casmurro',
+    'title': 'Dom Casmurro',
+    'subtitle': null,
+    'authors': [
+      {'id': 'author_machado_de_assis', 'name': 'Machado de Assis'},
+    ],
+  },
+  'edition': {
+    'id': 'edition_dom_casmurro_popular',
+    'title': 'Dom Casmurro',
+    'coverUrl': null,
+    'pageCount': 240,
+    'language': 'pt-BR',
+    'format': 'paperback',
+  },
+  'draft': null,
+  'startedAt': '2026-08-05T00:00:00.000Z',
+  'finishedAt': null,
+  'addedAt': '2026-08-01T00:00:00.000Z',
+  'updatedAt': '2026-08-05T00:00:00.000Z',
+};
+
+const _rereadingStateResponse = <String, Object?>{
+  'bookshelfItem': _rereadingItemResponse,
+  'session': {
+    'id': 'reading_session_seed_rereading',
+    'bookshelfItemId': 'bookshelf_item_seed_rereading',
+    'status': 'active',
+    'startedAt': '2026-08-05T00:00:00.000Z',
+    'finishedAt': null,
+  },
+  'lastProgress': null,
+  'activePlan': null,
+  'readingPace': {
+    'canCalculate': false,
+    'remainingPages': null,
+    'remainingDays': null,
+    'dailyPagesTarget': null,
+  },
 };

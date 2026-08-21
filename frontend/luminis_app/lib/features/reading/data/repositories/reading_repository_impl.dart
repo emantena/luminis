@@ -156,6 +156,9 @@ class ReadingRepositoryImpl implements ReadingRepository {
         b.bookshelfItem.readingStatus == ReadingStatus.reading ||
         b.bookshelfItem.readingStatus == ReadingStatus.rereading;
     if (activeA != activeB) return activeA ? -1 : 1;
+    final hasProgressA = a.lastProgress != null;
+    final hasProgressB = b.lastProgress != null;
+    if (hasProgressA != hasProgressB) return hasProgressA ? -1 : 1;
     return b.bookshelfItem.updatedAt.compareTo(a.bookshelfItem.updatedAt);
   }
 
@@ -213,6 +216,9 @@ class InMemoryReadingRepository implements ReadingRepository {
         b.bookshelfItem.readingStatus == ReadingStatus.reading ||
         b.bookshelfItem.readingStatus == ReadingStatus.rereading;
     if (activeA != activeB) return activeA ? -1 : 1;
+    final hasProgressA = a.lastProgress != null;
+    final hasProgressB = b.lastProgress != null;
+    if (hasProgressA != hasProgressB) return hasProgressA ? -1 : 1;
     return b.bookshelfItem.updatedAt.compareTo(a.bookshelfItem.updatedAt);
   }
 
