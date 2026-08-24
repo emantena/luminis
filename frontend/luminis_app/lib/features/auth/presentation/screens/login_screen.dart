@@ -83,7 +83,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         TextField(
           controller: _emailController,
           enabled: !formState.isSubmitting,
+          autocorrect: false,
+          enableSuggestions: false,
           keyboardType: TextInputType.emailAddress,
+          textCapitalization: TextCapitalization.none,
           textInputAction: TextInputAction.next,
           autofillHints: const [AutofillHints.email],
           decoration: authInputDecoration(
@@ -96,7 +99,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         TextField(
           controller: _passwordController,
           enabled: !formState.isSubmitting,
+          autocorrect: false,
+          enableSuggestions: false,
           obscureText: _obscurePassword,
+          textCapitalization: TextCapitalization.none,
           textInputAction: TextInputAction.done,
           autofillHints: const [AutofillHints.password],
           onSubmitted: (_) => _submit(),

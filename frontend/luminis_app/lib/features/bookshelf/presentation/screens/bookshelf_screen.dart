@@ -6,7 +6,7 @@ import '../../../../app/router/app_route_names.dart';
 import '../../../../app/theme/luminis_colors.dart';
 import '../../../../app/theme/luminis_spacing.dart';
 import '../../../../app/theme/luminis_typography.dart';
-import '../../../../shared/presentation/widgets/book_card.dart';
+import '../../../../shared/presentation/widgets/book_cover.dart';
 import '../../../../shared/presentation/widgets/bookshelf_status_chip.dart';
 import '../../../../shared/presentation/widgets/luminis_empty_state.dart';
 import '../../domain/entities/bookshelf_item.dart';
@@ -59,27 +59,65 @@ class _BookshelfScreenState extends ConsumerState<BookshelfScreen> {
         AsyncData(:final value) => RefreshIndicator(
           onRefresh: () =>
               ref.read(bookshelfControllerProvider.notifier).refresh(),
-          child: ListView(
-            padding: const EdgeInsets.fromLTRB(
-              LuminisSpacing.screenMargin,
-              LuminisSpacing.listItemGap,
-              LuminisSpacing.screenMargin,
-              LuminisSpacing.sectionGap,
-            ),
-            children: [
-              _NowReading(items: value),
-              const SizedBox(height: LuminisSpacing.sectionGap),
-              _StatusFilters(
-                selectedStatus: _selectedStatus,
-                onSelected: _applyStatusFilter,
+          child: CustomScrollView(
+            slivers: [
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(
+                  LuminisSpacing.screenMargin,
+                  LuminisSpacing.listItemGap,
+                  LuminisSpacing.screenMargin,
+                  0,
+                ),
+                sliver: SliverToBoxAdapter(child: _NowReading(items: value)),
               ),
-              const SizedBox(height: LuminisSpacing.sectionGap),
-              Text('Meus livros', style: LuminisTypography.sectionTitle),
-              const SizedBox(height: LuminisSpacing.listItemGap),
-              for (final item in value) ...[
-                _BookshelfItemCard(item: item),
-                const SizedBox(height: LuminisSpacing.listItemGap),
-              ],
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(
+                  LuminisSpacing.screenMargin,
+                  LuminisSpacing.sectionGap,
+                  LuminisSpacing.screenMargin,
+                  0,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: _StatusFilters(
+                    selectedStatus: _selectedStatus,
+                    onSelected: _applyStatusFilter,
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(
+                  LuminisSpacing.screenMargin,
+                  LuminisSpacing.sectionGap,
+                  LuminisSpacing.screenMargin,
+                  LuminisSpacing.listItemGap,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: Text(
+                    '${value.length} ${value.length == 1 ? 'livro' : 'livros'} na estante',
+                    style: LuminisTypography.sectionTitle,
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(
+                  LuminisSpacing.screenMargin,
+                  0,
+                  LuminisSpacing.screenMargin,
+                  LuminisSpacing.sectionGap,
+                ),
+                sliver: SliverGrid(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) => _BookshelfItemTile(item: value[index]),
+                    childCount: value.length,
+                  ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: LuminisSpacing.listItemGap,
+                    crossAxisSpacing: LuminisSpacing.listItemGap,
+                    childAspectRatio: 0.54,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -160,43 +198,98 @@ class _StatusFilters extends StatelessWidget {
   }
 }
 
-class _BookshelfItemCard extends ConsumerWidget {
-  const _BookshelfItemCard({required this.item});
+class _BookshelfItemTile extends ConsumerWidget {
+  const _BookshelfItemTile({required this.item});
 
   final BookshelfItem item;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final summary = item.summary;
-    return BookCard(
-      title: summary?.title ?? 'Livro da estante',
-      coverUrl: summary?.coverUrl,
-      metadata: [
-        summary?.authorLabel ?? 'Dados da edição indisponíveis',
-        if (summary?.editionLabel.isNotEmpty ?? false) summary!.editionLabel,
-      ].join(' · '),
-      status: BookshelfStatusChip(status: item.readingStatus),
-      semanticLabel:
-          '${summary?.title ?? 'Livro'} — ${_statusLabel(item.readingStatus)}',
-      onTap: () => context.pushNamed(
-        AppRouteNames.readingState,
-        pathParameters: {'bookshelfItemId': item.id},
-      ),
-      trailing: PopupMenuButton<_ItemAction>(
-        tooltip: 'Ações da estante',
-        onSelected: (action) => _handleAction(context, ref, action),
-        itemBuilder: (context) => [
-          PopupMenuItem(
-            value: _ItemAction.favorite,
-            child: Text(
-              item.tags.isFavorite ? 'Remover dos favoritos' : 'Favoritar',
+    final title = summary?.title ?? 'Livro da estante';
+    return Semantics(
+      button: true,
+      label: '$title — ${_statusLabel(item.readingStatus)}',
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () => context.pushNamed(
+            AppRouteNames.readingState,
+            pathParameters: {'bookshelfItemId': item.id},
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Center(
+                    child: BookCover(
+                      title: title,
+                      coverUrl: summary?.coverUrl,
+                      width: double.infinity,
+                      height: double.infinity,
+                      overlay: Positioned(
+                        top: 8,
+                        right: 8,
+                        child: BookshelfStatusChip(
+                          status: item.readingStatus,
+                          compact: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: LuminisTypography.cardTitle,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  summary?.authorLabel ?? 'Dados da edição indisponíveis',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: LuminisTypography.metadata,
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: BookshelfStatusChip(status: item.readingStatus),
+                      ),
+                    ),
+                    PopupMenuButton<_ItemAction>(
+                      tooltip: 'Ações da estante',
+                      padding: EdgeInsets.zero,
+                      iconSize: 20,
+                      onSelected: (action) =>
+                          _handleAction(context, ref, action),
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: _ItemAction.favorite,
+                          child: Text(
+                            item.tags.isFavorite
+                                ? 'Remover dos favoritos'
+                                : 'Favoritar',
+                          ),
+                        ),
+                        const PopupMenuItem(
+                          value: _ItemAction.remove,
+                          child: Text('Remover da estante'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-          const PopupMenuItem(
-            value: _ItemAction.remove,
-            child: Text('Remover da estante'),
-          ),
-        ],
+        ),
       ),
     );
   }

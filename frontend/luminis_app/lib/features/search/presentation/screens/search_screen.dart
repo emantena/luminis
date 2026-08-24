@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_route_names.dart';
+import '../../../../app/theme/luminis_colors.dart';
 import '../../../../app/theme/luminis_spacing.dart';
+import '../../../../app/theme/luminis_typography.dart';
 import '../../../../shared/presentation/widgets/book_card.dart';
 import '../../../../shared/presentation/widgets/luminis_empty_state.dart';
 import '../../../books/domain/value_objects/book_search_type.dart';
@@ -46,6 +48,22 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             child: SearchBar(
               controller: _queryController,
               hintText: 'Título, autor, editora ou ISBN',
+              elevation: const WidgetStatePropertyAll(0),
+              backgroundColor: const WidgetStatePropertyAll(
+                LuminisColors.surface,
+              ),
+              surfaceTintColor: const WidgetStatePropertyAll(
+                LuminisColors.surface,
+              ),
+              shadowColor: const WidgetStatePropertyAll(Colors.transparent),
+              side: const WidgetStatePropertyAll(
+                BorderSide(color: LuminisColors.line),
+              ),
+              shape: WidgetStatePropertyAll(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(LuminisRadii.card),
+                ),
+              ),
               leading: const Icon(Icons.search),
               trailing: [
                 if (_queryController.text.isNotEmpty)
@@ -69,6 +87,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               onRetry: _search,
               onLoadMore: () =>
                   ref.read(bookSearchControllerProvider.notifier).loadMore(),
+              onQuickSearch: _quickSearch,
             ),
           ),
         ],
@@ -83,6 +102,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   void _clearSearch() {
     _queryController.clear();
     ref.read(bookSearchControllerProvider.notifier).reset();
+    setState(() {});
+  }
+
+  void _quickSearch(String query) {
+    _queryController.text = query;
+    ref
+        .read(bookSearchControllerProvider.notifier)
+        .search(query: query, type: _type);
     setState(() {});
   }
 }
@@ -120,19 +147,17 @@ class _SearchContent extends StatelessWidget {
     required this.state,
     required this.onRetry,
     required this.onLoadMore,
+    required this.onQuickSearch,
   });
 
   final BookSearchState state;
   final VoidCallback onRetry;
   final VoidCallback onLoadMore;
+  final ValueChanged<String> onQuickSearch;
 
   @override
   Widget build(BuildContext context) => switch (state) {
-    BookSearchIdle() => const LuminisEmptyState(
-      icon: Icons.menu_book_outlined,
-      title: 'Encontre sua próxima leitura',
-      description: 'Busque por título, autor, editora, assunto ou ISBN.',
-    ),
+    BookSearchIdle() => _SearchDiscovery(onQuickSearch: onQuickSearch),
     BookSearchLoading() => const Center(child: CircularProgressIndicator()),
     BookSearchEmpty() => LuminisEmptyState(
       icon: Icons.search_off_outlined,
@@ -185,6 +210,95 @@ class _SearchContent extends StatelessWidget {
       },
     ),
   };
+}
+
+class _SearchDiscovery extends StatelessWidget {
+  const _SearchDiscovery({required this.onQuickSearch});
+
+  final ValueChanged<String> onQuickSearch;
+
+  static const _suggestions = [
+    ('Machado de Assis', Icons.auto_stories_outlined),
+    ('Clarice Lispector', Icons.edit_note_outlined),
+    ('Romance', Icons.favorite_border),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(
+        LuminisSpacing.screenMargin,
+        LuminisSpacing.sectionGap,
+        LuminisSpacing.screenMargin,
+        LuminisSpacing.sectionGap,
+      ),
+      children: [
+        const LuminisEmptyState(
+          icon: Icons.menu_book_outlined,
+          title: 'Encontre sua próxima leitura',
+          description: 'Busque por título, autor, editora, assunto ou ISBN.',
+        ),
+        const SizedBox(height: LuminisSpacing.sectionGap),
+        Text('Comece por aqui', style: LuminisTypography.sectionTitle),
+        const SizedBox(height: LuminisSpacing.listItemGap),
+        for (final suggestion in _suggestions) ...[
+          _DiscoverySuggestion(
+            label: suggestion.$1,
+            icon: suggestion.$2,
+            onTap: () => onQuickSearch(suggestion.$1),
+          ),
+          const SizedBox(height: LuminisSpacing.listItemGap),
+        ],
+      ],
+    );
+  }
+}
+
+class _DiscoverySuggestion extends StatelessWidget {
+  const _DiscoverySuggestion({
+    required this.label,
+    required this.icon,
+    required this.onTap,
+  });
+
+  final String label;
+  final IconData icon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: 'Buscar $label',
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: LuminisColors.surface,
+          border: Border.all(color: LuminisColors.line),
+          borderRadius: BorderRadius.circular(LuminisRadii.card),
+        ),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(LuminisRadii.card),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(LuminisSpacing.listItemGap),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 28,
+                  child: Icon(icon, color: LuminisColors.primary),
+                ),
+                const SizedBox(width: LuminisSpacing.listItemGap),
+                Expanded(
+                  child: Text(label, style: LuminisTypography.cardTitle),
+                ),
+                const Icon(Icons.arrow_forward, size: 20),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 String _searchTypeLabel(BookSearchType type) => switch (type) {

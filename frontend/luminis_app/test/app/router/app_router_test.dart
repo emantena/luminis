@@ -18,16 +18,14 @@ import '../../features/auth/fakes/fake_auth_repository.dart';
 /// Necessário porque os rótulos das abas do shell autenticado (`Estante`,
 /// `Buscar`, ...) coincidem de propósito com o título das telas raiz de
 /// cada aba — `find.text(...)` sozinho encontraria os dois (título da
-/// `AppBar` da tela + rótulo do item na `BottomNavigationBar`).
+/// `AppBar` da tela + rótulo do item na `NavigationBar`).
 Finder _appBarText(String text) =>
     find.descendant(of: find.byType(AppBar), matching: find.text(text));
 
-/// Localiza texto especificamente dentro da `BottomNavigationBar`, para
+/// Localiza texto especificamente dentro da `NavigationBar`, para
 /// tocar em uma aba pelo rótulo sem ambiguidade com o título da tela ativa.
-Finder _bottomNavTab(String label) => find.descendant(
-  of: find.byType(BottomNavigationBar),
-  matching: find.text(label),
-);
+Finder _bottomNavTab(String label) =>
+    find.descendant(of: find.byType(NavigationBar), matching: find.text(label));
 
 Future<ProviderContainer> _pumpAuthenticatedApp(WidgetTester tester) async {
   final session = buildSampleSession();
@@ -77,7 +75,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(WelcomeScreen), findsOneWidget);
-      expect(find.byType(BottomNavigationBar), findsNothing);
+      expect(find.byType(NavigationBar), findsNothing);
     });
 
     testWidgets('usuário desautenticado tentando acessar rota protegida é '
@@ -100,7 +98,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(WelcomeScreen), findsOneWidget);
-      expect(find.byType(BottomNavigationBar), findsNothing);
+      expect(find.byType(NavigationBar), findsNothing);
     });
 
     testWidgets('login mockado autentica e redireciona para a Estante', (
@@ -132,7 +130,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(WelcomeScreen), findsOneWidget);
-      expect(find.byType(BottomNavigationBar), findsNothing);
+      expect(find.byType(NavigationBar), findsNothing);
     });
   });
 

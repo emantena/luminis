@@ -3,14 +3,23 @@ import 'package:flutter/widgets.dart';
 /// Paleta de cores aprovada em `docs/ux/design-system.md`.
 ///
 /// Os nomes seguem os tokens documentados (Primary, Accent, Ink, Surface,
-/// Canvas, Line, Coral, Warm) para manter rastreabilidade com o design
-/// system. Não redefinir valores fora deste arquivo.
+/// Canvas, Line, Coral, Warm) para manter rastreabilidade com o design system.
+/// Não redefinir valores fora deste arquivo.
 abstract final class LuminisColors {
   /// Navegação, elementos estruturais e apoio visual.
   static const Color primary = Color(0xFF5F7FA5);
 
   /// Marca, progresso, conquistas, metas e ações de destaque.
   static const Color accent = Color(0xFFF59F0A);
+
+  /// Texto e ícones sobre ações com fundo Accent.
+  static const Color onAccent = Color(0xFF202124);
+
+  /// Fundo de botões primários de alto contraste.
+  static const Color action = Color(0xFF243041);
+
+  /// Texto e ícones sobre botões primários.
+  static const Color onAction = Color(0xFFF8FAFD);
 
   /// Texto principal e superfícies escuras.
   static const Color ink = Color(0xFF303744);

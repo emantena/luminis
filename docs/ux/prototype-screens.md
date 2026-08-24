@@ -117,6 +117,15 @@ Composicao visual aprovada para prototipacao:
 Referencia visual:
 - `docs/ux/prototypes/bookshelf-screen-preview.png`
 
+Tratamento visual Variante C aprovado:
+- Quando houver itens, a Estante pode usar grade de duas colunas para dar
+  presenca as capas e tornar a biblioteca pessoal mais reconhecivel.
+- Cada item deve manter titulo, autor e status textual; um marcador compacto
+  sobre a capa reforca o status, sem depender apenas de cor.
+- O topo deve exibir contador de itens visiveis apos os filtros.
+- A grade nao altera acoes existentes: tocar abre a leitura do item e o menu
+  continua oferecendo etiquetas e remocao.
+
 ### Buscar
 
 Rota:
@@ -250,6 +259,10 @@ Navega para:
 
 Referencia visual:
 - `docs/ux/prototypes/add-to-bookshelf-bottom-sheet-preview.png`
+
+Tratamento visual Variante C aprovado:
+- O status selecionado deve usar `Warm` com borda `Accent`, em vez do azul
+  padrao do componente Material, preservando contraste e a hierarquia do CTA.
 
 ### Cadastro Local
 
@@ -791,6 +804,8 @@ Composicao visual aprovada para prototipacao:
 - Foto deve aparecer no topo com acao `Alterar foto`.
 - Nome exibido deve ser obrigatorio.
 - Bio deve ser opcional e limitada visualmente para texto curto.
+- Campos devem usar superficie clara com contorno completo e label persistente;
+  nao usar campos sublinhados nem blocos de cor decorativos atras dos icones.
 - Acao primaria: `Salvar perfil`.
 - Apos salvar, retornar para `/profile`.
 
@@ -865,4 +880,3 @@ Composicao visual aprovada para prototipacao:
 - Meta ativa.
 - Meta concluida com bonus.
 - Meta vencida nao atingida.
-

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-/// Scaffold do shell autenticado: bottom navigation fixa com as 5 abas do
+/// Scaffold do shell autenticado: navigation bar fixa com as 5 abas do
 /// MVP (Estante, Buscar, Leitura, Metas, Perfil) sobre o
 /// `StatefulNavigationShell` do `go_router`.
 ///
@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 /// (`StatefulShellRoute.indexedStack`, ver `app_router.dart`); trocar de
 /// aba preserva o estado/pilha da aba anterior.
 ///
-/// Estilo (cores, ícones ativos/inativos) vem do `bottomNavigationBarTheme`
+/// Estilo (cores, ícones ativos/inativos) vem do `navigationBarTheme`
 /// de `LuminisTheme`; este widget só decide estrutura de navegação.
 class AppShell extends StatelessWidget {
   const AppShell({required this.navigationShell, super.key});
@@ -20,37 +20,37 @@ class AppShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: navigationShell.currentIndex,
-        onTap: (index) => navigationShell.goBranch(
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: navigationShell.currentIndex,
+        onDestinationSelected: (index) => navigationShell.goBranch(
           index,
           // Tocar novamente na aba já ativa volta para a raiz dela.
           initialLocation: index == navigationShell.currentIndex,
         ),
-        items: const [
-          BottomNavigationBarItem(
+        destinations: const [
+          NavigationDestination(
             icon: Icon(Icons.library_books_outlined),
-            activeIcon: Icon(Icons.library_books),
+            selectedIcon: Icon(Icons.library_books),
             label: 'Estante',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.search_outlined),
-            activeIcon: Icon(Icons.search),
+            selectedIcon: Icon(Icons.search),
             label: 'Buscar',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.menu_book_outlined),
-            activeIcon: Icon(Icons.menu_book),
+            selectedIcon: Icon(Icons.menu_book),
             label: 'Leitura',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.flag_outlined),
-            activeIcon: Icon(Icons.flag),
+            selectedIcon: Icon(Icons.flag),
             label: 'Metas',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
+            selectedIcon: Icon(Icons.person),
             label: 'Perfil',
           ),
         ],

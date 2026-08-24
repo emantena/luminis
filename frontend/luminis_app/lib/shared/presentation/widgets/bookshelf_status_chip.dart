@@ -11,9 +11,14 @@ import '../../../features/bookshelf/domain/entities/reading_status.dart';
 /// paleta base de `LuminisColors`), por isso ficam declaradas aqui em vez de
 /// promovidas a token compartilhado.
 class BookshelfStatusChip extends StatelessWidget {
-  const BookshelfStatusChip({required this.status, super.key});
+  const BookshelfStatusChip({
+    required this.status,
+    this.compact = false,
+    super.key,
+  });
 
   final ReadingStatus status;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
@@ -22,18 +27,25 @@ class BookshelfStatusChip extends StatelessWidget {
       label: 'Status de leitura: ${style.label}',
       excludeSemantics: true,
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: LuminisSpacing.listItemGap,
-          vertical: 4,
+        padding: EdgeInsets.symmetric(
+          horizontal: compact ? 7 : LuminisSpacing.listItemGap,
+          vertical: compact ? 7 : 4,
         ),
         decoration: BoxDecoration(
           color: style.background,
+          border: compact
+              ? Border.all(color: const Color(0xFFFFFFFF), width: 2)
+              : null,
           borderRadius: BorderRadius.circular(LuminisRadii.pill),
         ),
-        child: Text(
-          style.label,
-          style: LuminisTypography.labelChip.copyWith(color: style.foreground),
-        ),
+        child: compact
+            ? const SizedBox(width: 2, height: 2)
+            : Text(
+                style.label,
+                style: LuminisTypography.labelChip.copyWith(
+                  color: style.foreground,
+                ),
+              ),
       ),
     );
   }

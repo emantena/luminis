@@ -210,6 +210,20 @@ Decisoes importantes de Goals:
 - Meta ativa vencida e nao atingida permanece `active`; API deve expor flags calculadas para o Flutter alertar o usuario e oferecer alteracao.
 - Progresso por percentual so contribui para meta `pages_read` quando houver `pageCount/page_count` conhecido para converter percentual em paginas.
 
+## Notas recentes de validacao no device
+
+Durante a validacao em device Android fisico via `scrcpy`/ADB, manter estes pontos em mente:
+
+- Screenshots de validacao nao devem entrar no repo. Quando precisar capturar tela, salvar em pasta temporaria fora do projeto.
+- Ao alterar a mock API em `backend/mock-api`, reiniciar o processo Node antes de validar. Se o servidor antigo continuar rodando na porta 3999, chamadas novas podem bater em rotas antigas e retornar, por exemplo, `mock_api.route_not_found`.
+- Para device Android fisico usando a mock API local: subir a mock API no host na porta 3999, executar `adb reverse tcp:3999 tcp:3999` e rodar o Flutter com `--dart-define=API_BASE_URL=http://localhost:3999/api`.
+- Neste setup, `adb shell input text 'ana.lima%40leitores.mock'` digitou `%40` literalmente em vez de `@`; o mesmo ocorreu com escapes como `%23`.
+- `adb shell input keyevent 77` insere `@` e `adb shell input keyevent 18` insere `#`, mas o Gboard/IME ainda pode aplicar autocorrecao e inserir espacos depois de ponto.
+- O Gboard mudou `ana.lima` para formas como `Ana. lima`, fazendo o email falhar na validacao local do Flutter. Tambem e facil anexar a senha no campo de email se o toque por coordenada errar com o teclado aberto.
+- `adb shell cmd clipboard set '...'` retornou `No shell command implementation` neste Android; paste via clipboard/`KEYCODE_PASTE` nao deve ser tratado como confiavel.
+- Para smoke test via ADB, preferir credenciais sem ponto no local-part do email e sem caracteres especiais na senha, ou criar uma conta de teste simples. As fixtures `ana.lima@leitores.mock` / `Leitura#2024` funcionam manualmente, mas sao ruins para automacao por `adb input`.
+- Durante a validacao de perfil no device, os campos de auth foram ajustados para entrada previsivel (`autocorrect: false`, `enableSuggestions: false` e `textCapitalization: TextCapitalization.none` em email, senha e codigo). Isso reduziu o problema de autocorrecao/capitalizacao ao usar `adb input`; caracteres especiais ainda exigem cuidado.
+
 ## Proximo trabalho recomendado
 
 Escolha um:

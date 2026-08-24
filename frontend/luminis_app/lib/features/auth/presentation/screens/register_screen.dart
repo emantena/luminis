@@ -118,7 +118,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         TextField(
           controller: _emailController,
           enabled: !formState.isSubmitting,
+          autocorrect: false,
+          enableSuggestions: false,
           keyboardType: TextInputType.emailAddress,
+          textCapitalization: TextCapitalization.none,
           textInputAction: TextInputAction.next,
           autofillHints: const [AutofillHints.email],
           decoration: authInputDecoration(
@@ -131,7 +134,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         TextField(
           controller: _passwordController,
           enabled: !formState.isSubmitting,
+          autocorrect: false,
+          enableSuggestions: false,
           obscureText: _obscurePassword,
+          textCapitalization: TextCapitalization.none,
           textInputAction: TextInputAction.next,
           autofillHints: const [AutofillHints.newPassword],
           decoration: authInputDecoration(
@@ -155,7 +161,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         TextField(
           controller: _confirmPasswordController,
           enabled: !formState.isSubmitting,
+          autocorrect: false,
+          enableSuggestions: false,
           obscureText: _obscureConfirmPassword,
+          textCapitalization: TextCapitalization.none,
           textInputAction: TextInputAction.done,
           onSubmitted: (_) => _submit(),
           decoration: authInputDecoration(

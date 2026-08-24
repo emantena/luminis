@@ -18,7 +18,7 @@ abstract final class LuminisTheme {
           primary: LuminisColors.primary,
           onPrimary: LuminisColors.surface,
           secondary: LuminisColors.accent,
-          onSecondary: LuminisColors.ink,
+          onSecondary: LuminisColors.onAccent,
           surface: LuminisColors.surface,
           onSurface: LuminisColors.ink,
           error: LuminisColors.coral,
@@ -35,6 +35,13 @@ abstract final class LuminisTheme {
         color: LuminisColors.line,
         thickness: 1,
       ),
+      appBarTheme: AppBarTheme(
+        backgroundColor: LuminisColors.canvas,
+        foregroundColor: LuminisColors.ink,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        titleTextStyle: LuminisTypography.screenTitle,
+      ),
       cardTheme: CardThemeData(
         color: LuminisColors.surface,
         surfaceTintColor: LuminisColors.surface,
@@ -47,14 +54,18 @@ abstract final class LuminisTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: LuminisColors.accent,
-          foregroundColor: LuminisColors.ink,
+          backgroundColor: LuminisColors.action,
+          foregroundColor: LuminisColors.onAction,
+          elevation: 0,
+          shadowColor: Colors.transparent,
           minimumSize: const Size.fromHeight(LuminisSpacing.minTouchTarget + 4),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(LuminisRadii.card),
           ),
           textStyle: LuminisTypography.body.copyWith(
-            fontWeight: FontWeight.w700,
+            fontSize: 15,
+            fontWeight: FontWeight.w800,
           ),
         ),
       ),
@@ -68,13 +79,49 @@ abstract final class LuminisTheme {
           ),
         ),
       ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            return states.contains(WidgetState.selected)
+                ? LuminisColors.warm.withValues(alpha: 0.72)
+                : LuminisColors.surface;
+          }),
+          foregroundColor: const WidgetStatePropertyAll(LuminisColors.ink),
+          side: WidgetStateProperty.resolveWith((states) {
+            return BorderSide(
+              color: states.contains(WidgetState.selected)
+                  ? LuminisColors.accent
+                  : LuminisColors.line,
+            );
+          }),
+        ),
+      ),
+      navigationBarTheme: NavigationBarThemeData(
         backgroundColor: LuminisColors.surface,
-        selectedItemColor: LuminisColors.accent,
-        unselectedItemColor: LuminisColors.ink.withValues(alpha: 0.6),
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        indicatorColor: LuminisColors.accent.withValues(alpha: 0.22),
+        indicatorShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(LuminisRadii.card),
+        ),
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          final selected = states.contains(WidgetState.selected);
+          return IconThemeData(
+            color: selected
+                ? LuminisColors.onAccent
+                : LuminisColors.ink.withValues(alpha: 0.58),
+            size: selected ? 27 : 25,
+          );
+        }),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          final selected = states.contains(WidgetState.selected);
+          return LuminisTypography.labelChip.copyWith(
+            color: selected
+                ? LuminisColors.ink
+                : LuminisColors.ink.withValues(alpha: 0.62),
+            fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
+          );
+        }),
       ),
     );
   }

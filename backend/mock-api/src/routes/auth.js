@@ -3,7 +3,7 @@ const express = require('express');
 
 const state = require('../state');
 const { sendError } = require('../errors');
-const { isNonEmptyString, isValidEmail } = require('../validators');
+const { isNonEmptyString, isValidEmail, isValidHttpUrl } = require('../validators');
 const { requireAuth } = require('../authMiddleware');
 
 const router = express.Router();
@@ -301,6 +301,45 @@ router.get('/me', requireAuth, (req, res) => {
   if (!user) {
     return sendError(req, res, 401, 'auth.unauthorized', 'Sessao invalida ou expirada.');
   }
+
+  return res.status(200).json(toMeResponse(user));
+});
+
+// PATCH /api/me
+router.patch('/me', requireAuth, (req, res) => {
+  const user = state.users.find((u) => u.id === req.currentUserId);
+  if (!user) {
+    return sendError(req, res, 401, 'auth.unauthorized', 'Sessao invalida ou expirada.');
+  }
+
+  const { displayName, photoUrl, bio } = req.body || {};
+  const errors = {};
+
+  if (!isNonEmptyString(displayName)) {
+    errors.displayName = ['Nome de exibicao e obrigatorio.'];
+  } else if (displayName.trim().length > 120) {
+    errors.displayName = ['Nome de exibicao deve ter no maximo 120 caracteres.'];
+  }
+
+  if (bio !== undefined && bio !== null && typeof bio !== 'string') {
+    errors.bio = ['Bio deve ser texto ou null.'];
+  } else if (typeof bio === 'string' && bio.length > 500) {
+    errors.bio = ['Bio deve ter no maximo 500 caracteres.'];
+  }
+
+  if (photoUrl !== undefined && photoUrl !== null && typeof photoUrl !== 'string') {
+    errors.photoUrl = ['Foto deve ser uma URL ou null.'];
+  } else if (typeof photoUrl === 'string' && !isValidHttpUrl(photoUrl)) {
+    errors.photoUrl = ['Foto deve ser uma URL absoluta http ou https.'];
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return sendError(req, res, 400, 'validation.failed', 'Existem campos invalidos.', errors);
+  }
+
+  user.displayName = displayName.trim();
+  user.photoUrl = photoUrl === undefined ? user.photoUrl : photoUrl === null ? null : photoUrl.trim();
+  user.bio = bio === undefined ? user.bio : bio === null ? null : bio.trim();
 
   return res.status(200).json(toMeResponse(user));
 });

@@ -140,6 +140,9 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
         TextField(
           controller: _tokenController,
           enabled: !formState.isSubmitting,
+          autocorrect: false,
+          enableSuggestions: false,
+          textCapitalization: TextCapitalization.none,
           textInputAction: TextInputAction.next,
           decoration: authInputDecoration(
             label: 'Código de redefinição',
@@ -151,7 +154,10 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
         TextField(
           controller: _passwordController,
           enabled: !formState.isSubmitting,
+          autocorrect: false,
+          enableSuggestions: false,
           obscureText: _obscurePassword,
+          textCapitalization: TextCapitalization.none,
           textInputAction: TextInputAction.next,
           autofillHints: const [AutofillHints.newPassword],
           decoration: authInputDecoration(
@@ -175,7 +181,10 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
         TextField(
           controller: _confirmPasswordController,
           enabled: !formState.isSubmitting,
+          autocorrect: false,
+          enableSuggestions: false,
           obscureText: _obscureConfirmPassword,
+          textCapitalization: TextCapitalization.none,
           textInputAction: TextInputAction.done,
           onSubmitted: (_) => _submit(),
           decoration: authInputDecoration(

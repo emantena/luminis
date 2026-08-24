@@ -13,6 +13,9 @@ Status: proposta aprovada para prototipacao.
 ```yaml
 Primary: "#5f7fa5"
 Accent:  "#f59f0a"
+OnAccent: "#202124"
+Action:  "#243041"
+OnAction: "#f8fafd"
 Ink:     "#303744"
 Surface: "#ffffff"
 Canvas:  "#f3f4f6"
@@ -24,6 +27,9 @@ Warm:    "#e9ca88"
 Uso sugerido:
 - `Primary`: navegacao, elementos estruturais e apoio visual.
 - `Accent`: marca, progresso, conquistas, metas e acoes de destaque.
+- `OnAccent`: texto e icones sobre acoes com fundo `Accent`, usando neutro escuro para alto contraste sem puxar para azul.
+- `Action`: fundo de botoes primarios, escuro e editorial para alto contraste com texto claro.
+- `OnAction`: texto e icones sobre botoes primarios.
 - `Ink`: texto principal e superficies escuras.
 - `Surface`: cards e areas elevadas.
 - `Canvas`: fundo principal do app.
@@ -165,8 +171,8 @@ Uso:
 - Acao principal da tela ou fluxo.
 
 Visual:
-- Fundo `Accent`.
-- Texto `Ink`.
+- Fundo `Action`.
+- Texto `OnAction`.
 - Altura minima 48px.
 - Raio 8px.
 - Peso 700.
@@ -213,7 +219,8 @@ Abas:
 Visual:
 - Fundo `Surface`.
 - Borda superior `Line`.
-- Item ativo em `Accent` ou `Primary`.
+- Usar `NavigationBar` Material 3 no Flutter.
+- Item ativo com indicador em `Accent` suave e icone preenchido.
 - Item inativo em texto secundario.
 - Labels sempre visiveis no MVP para reduzir ambiguidade.
 
@@ -225,6 +232,7 @@ Uso:
 Visual:
 - Sem ilustracao complexa obrigatoria.
 - Icone simples ou composicao com capa vazia.
+- Nao usar faixas ou swatches de cor decorativos sem relacao com o estado.
 - Titulo curto.
 - Texto de apoio objetivo.
 - Uma acao primaria clara.
@@ -238,6 +246,9 @@ Exemplos:
 ## Diretrizes
 
 - Capas de livros devem ter presenca visual.
+- Quando uma capa estiver indisponivel, usar fallback editorial com titulo e
+  variacao de paleta deterministica por livro; nunca repetir apenas `Primary`
+  em toda a grade/lista.
 - Cards devem ser compactos e legiveis.
 - Texto deve ser confortavel para leitura prolongada.
 - Acoes destrutivas devem exigir confirmacao.

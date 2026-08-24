@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../app/theme/luminis_colors.dart';
 import '../../../app/theme/luminis_spacing.dart';
 import '../../../app/theme/luminis_typography.dart';
 
@@ -28,14 +29,20 @@ class LuminisEmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 40),
+            Icon(icon, size: 48, color: LuminisColors.primary),
             const SizedBox(height: LuminisSpacing.listItemGap),
-            Text(title, style: LuminisTypography.sectionTitle),
-            const SizedBox(height: 4),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: LuminisTypography.sectionTitle,
+            ),
+            const SizedBox(height: 6),
             Text(
               description,
               textAlign: TextAlign.center,
-              style: LuminisTypography.body,
+              style: LuminisTypography.body.copyWith(
+                color: LuminisColors.ink.withValues(alpha: 0.72),
+              ),
             ),
             if (actionLabel != null && onAction != null) ...[
               const SizedBox(height: LuminisSpacing.listItemGap),

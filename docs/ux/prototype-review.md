@@ -43,6 +43,12 @@ As telas principais possuem especificacao em `docs/ux/prototype-screens.md` e pr
 
 ## Lacunas Antes Do Flutter
 
+### Desejabilidade Visual
+
+- A primeira versao Flutter ficou clara e funcional, mas ha risco de parecer apagada ou triste.
+- Criado roteiro dedicado em `docs/ux/wow-factor-test.md` para comparar a build atual com uma variante visual mais expressiva.
+- A validacao deve medir energia, memorabilidade, vontade de explorar e confianca, sem induzir o usuario com a palavra "wow".
+
 ### Previews Ainda Ausentes Ou Opcionais
 
 - Auth detalhado: `/auth/login`, `/auth/register`, `/auth/forgot-password`, `/auth/reset-password`.
